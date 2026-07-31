@@ -6,7 +6,7 @@
 
 ## 📃 Sobre o Projeto
 
-Projeto desenvolvido para a disciplina de *Engenharia de Software*, ministrada pela Professora [Thaís Alves Burity Rocha](https://github.com/taburity), da UFAPE (campus Garanhuns), referente à 2ª Verificação de Aprendizagem.
+Projeto desenvolvido para a disciplina de **Engenharia de Software**, ministrada pela Professora [Thaís Alves Burity Rocha](https://github.com/taburity), da UFAPE (campus Garanhuns), referente à 2ª Verificação de Aprendizagem.
 
 O sistema se propõe a catalogar as ideias da comunidade para melhorar a UFAPE, oferecendo um espaço centralizado onde estudantes, docentes e servidores podem propor melhorias, discuti-las coletivamente e acompanhar seu andamento até a implantação.
 
