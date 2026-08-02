@@ -22,6 +22,74 @@ O usuário deve ser capaz de cadastrar propostas de melhoria para a universidade
 ### Backend
 - [Java](https://www.java.com/)
 - [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring Data JPA]
+- [Spring Security]
+- [Maven]
+
+### Banco de Dados
+
+- MySQL 8.4
+- Docker (para execução do banco)
+
+## Como executar o projeto
+
+### 1. Clonar o repositório
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+```
+
+Entre na pasta do projeto:
+
+```bash
+cd Plataforma-de-Ideias-e-Inovacao
+```
+
+---
+
+### 2. Subir o banco de dados
+
+Na raiz do projeto execute:
+
+```bash
+docker-compose up -d
+```
+
+Isso iniciará um container MySQL com:
+
+- Banco: `plataforma_ideias`
+- Usuário: `grupo4`
+- Senha: `123456`
+
+### 3. Executar o backend
+
+Entre na pasta do backend:
+
+```bash
+cd backend
+```
+
+Execute:
+
+```bash
+mvn spring-boot:run
+```
+
+A aplicação ficará disponível em:
+
+```
+http://localhost:8080
+```
+
+## Configuração do banco
+
+O backend utiliza as seguintes configurações:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/plataforma_ideias
+spring.datasource.username=grupo4
+spring.datasource.password=123456
+```
 
 ### Gerenciamento
 - GitHub Projects (Quadro Scrum)
