@@ -1,0 +1,66 @@
+<h2>Cadastro de Usuário</h2>
+
+<form (ngSubmit)="cadastrar()">
+  <div>
+    <label for="nome">Nome</label><br>
+
+    <input
+      id="nome"
+      type="text"
+      name="nome"
+      [(ngModel)]="nome"
+      required
+    >
+  </div>
+
+  <br>
+
+  <div>
+    <label for="email">E-mail</label><br>
+
+    <input
+      id="email"
+      type="email"
+      name="email"
+      [(ngModel)]="email"
+      required
+    >
+  </div>
+
+  <br>
+
+  <div>
+    <label for="senha">Senha</label><br>
+
+    <input
+      id="senha"
+      type="password"
+      name="senha"
+      [(ngModel)]="senha"
+      minlength="6"
+      required
+    >
+  </div>
+
+  <br>
+
+  <button type="submit" [disabled]="carregando()">
+    @if (carregando()) {
+      Cadastrando...
+    } @else {
+      Cadastrar
+    }
+  </button>
+</form>
+
+@if (mensagem()) {
+  <p>{{ mensagem() }}</p>
+}
+
+@if (erro()) {
+  <p>{{ erro() }}</p>
+}
+
+<br>
+
+<a href="/login">Voltar para o login</a>
