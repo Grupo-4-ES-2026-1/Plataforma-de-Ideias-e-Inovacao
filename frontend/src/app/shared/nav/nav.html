@@ -1,0 +1,14 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    Plataforma de Ideias e Inovação
+  </div>
+
+  <div class="navbar-actions">
+    @if (autenticado) {
+      <span class="navbar-user">Olá, {{ usuarioLogado }}</span>
+      <button class="btn-logout" (click)="logout()">Sair</button>
+    } @else {
+      <a routerLink="/login" class="navbar-link">Entrar</a>
+    }
+  </div>
+</nav>
