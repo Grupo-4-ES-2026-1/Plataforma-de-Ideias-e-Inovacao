@@ -36,6 +36,13 @@ export class AuthService {
     );
   }
 
+  logout(): void {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
+  this.usuarioLogado.set(null);
+  this.roleAtual.set(null);
+  }
 
   recuperarToken(): string | null {
     return typeof localStorage !== 'undefined'
