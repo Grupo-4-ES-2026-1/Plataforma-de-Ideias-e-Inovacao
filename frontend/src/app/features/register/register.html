@@ -106,27 +106,6 @@
 
     <br>
 
-    <div>
-      <label for="role">Perfil</label><br>
-
-      <select
-        id="role"
-        formControlName="role"
-      >
-        <option value="USER">Usuário</option>
-        <option value="ADMIN">Administrador</option>
-      </select>
-
-      @if (
-        formulario.controls.role.touched &&
-        formulario.controls.role.hasError('required')
-      ) {
-        <p>Selecione um perfil.</p>
-      }
-    </div>
-
-    <br>
-
     <button
       type="submit"
       [disabled]="carregando()"
@@ -140,11 +119,11 @@
   </form>
 
   @if (mensagem()) {
-    <p>{{ mensagem() }}</p>
+    <p class="sucesso">{{ mensagem() }}</p>
   }
 
   @if (erro()) {
-    <p>{{ erro() }}</p>
+    <p class="erro-geral">{{ erro() }}</p>
   }
 
   <br>

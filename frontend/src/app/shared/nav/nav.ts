@@ -9,7 +9,6 @@ import { AuthService } from '../../services/auth';
   templateUrl: './nav.html',
   styleUrl: './nav.css',
 })
-
 export class Nav {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
@@ -23,7 +22,8 @@ export class Nav {
   }
 
   logout(): void {
-    this.auth.logout();
-    this.router.navigate(['/login']);
+    this.auth.logout().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
   }
 }

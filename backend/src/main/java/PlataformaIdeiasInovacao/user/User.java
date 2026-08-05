@@ -1,12 +1,18 @@
 package PlataformaIdeiasInovacao.user;
 
-import jakarta.persistence.*;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -35,14 +41,14 @@ public class User implements UserDetails {
         this.nome = nome;
         this.email = email;
         this.password = password;
-        this.role = "USER"; // Define a role padrão para não ir nula para o banco
+        this.role = "USER";
     }
 
-    // --- Métodos do Spring Security (UserDetails) ---
+   
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Mapeia a role para o formato padronizado do Spring Security (ROLE_ADMIN ou ROLE_USER)
+        
         if (this.role != null && this.role.equalsIgnoreCase("ADMIN")) {
             return List.of(
                     new SimpleGrantedAuthority("ROLE_ADMIN"),
@@ -69,7 +75,7 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() { return true; }
 
-    // Getters e Setters:
+  
 
     public Long getId() {
         return id;

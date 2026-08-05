@@ -16,7 +16,8 @@ interface AuthResponse {
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'jwt_token';
-  private readonly loginEndpoint = '/auth/login';
+  private readonly loginEndpoint = 'http://localhost:8080/auth/login';
+  private readonly logoutEndpoint = 'http://localhost:8080/auth/logout';
 
   usuarioLogado = signal<string | null>(null);
   roleAtual = signal<string | null>(null);
@@ -27,7 +28,7 @@ export class AuthService {
   }
 
   login(email: string, senha: string): Observable<boolean> {
-    const credenciais: Credenciais = { email, senha };
+    const credenciais = { email, password: senha };
 
     return this.http.post<AuthResponse>(this.loginEndpoint, credenciais).pipe(
       tap((response) => this.salvarToken(response.token)),
@@ -36,12 +37,25 @@ export class AuthService {
     );
   }
 
-  logout(): void {
-  if (typeof localStorage !== 'undefined') {
-    localStorage.removeItem(this.TOKEN_KEY);
+  
+  logout(): Observable<boolean> {
+    return this.http.post(this.logoutEndpoint, {}).pipe(
+      tap(() => this.limparDadosLocais()), 
+      map(() => true),
+      catchError(() => {
+       
+        this.limparDadosLocais();
+        return of(false);
+      })
+    );
   }
-  this.usuarioLogado.set(null);
-  this.roleAtual.set(null);
+
+  private limparDadosLocais(): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(this.TOKEN_KEY);
+    }
+    this.usuarioLogado.set(null);
+    this.roleAtual.set(null);
   }
 
   recuperarToken(): string | null {
@@ -64,8 +78,6 @@ export class AuthService {
     this.processarToken(token);
   }
 
-
-
   private processarToken(token: string): void {
     const payload = this.decodificarToken(token);
     if (!payload) {
@@ -74,7 +86,7 @@ export class AuthService {
       return;
     }
 
-    const nome = payload['sub'] ?? payload['nome'];
+    const nome = payload['nome'] ?? payload['sub'];
     const role = payload['role'] ?? payload['roles'];
 
     this.usuarioLogado.set(typeof nome === 'string' ? nome : null);
@@ -98,4 +110,3 @@ export class AuthService {
     }
   }
 }
-
