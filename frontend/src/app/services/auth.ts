@@ -17,6 +17,7 @@ interface AuthResponse {
 export class AuthService {
   private readonly TOKEN_KEY = 'jwt_token';
   private readonly loginEndpoint = '/auth/login';
+  private readonly logoutEndpoint = '/auth/logout';
 
   usuarioLogado = signal<string | null>(null);
   roleAtual = signal<string | null>(null);
@@ -36,12 +37,26 @@ export class AuthService {
     );
   }
 
-  logout(): void {
-  if (typeof localStorage !== 'undefined') {
-    localStorage.removeItem(this.TOKEN_KEY);
+// metodo de logout que avisa ao backend que o usuário quer sair, e limpa os dados locais do front
+  logout(): Observable<boolean> {
+    return this.http.post(this.logoutEndpoint, {}).pipe(
+      tap(() => this.limparDadosLocais()), // Se a API responder OK, limpa o front
+      map(() => true),
+      catchError(() => {
+        //caso a API der erro, força a limpeza local por segurança
+        this.limparDadosLocais(); 
+        return of(false);
+      })
+    );
   }
-  this.usuarioLogado.set(null);
-  this.roleAtual.set(null);
+
+  
+  private limparDadosLocais(): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(this.TOKEN_KEY);
+    }
+    this.usuarioLogado.set(null);
+    this.roleAtual.set(null);
   }
 
   recuperarToken(): string | null {
