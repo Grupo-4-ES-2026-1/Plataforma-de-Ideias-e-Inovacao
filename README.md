@@ -36,7 +36,7 @@ O usuário deve ser capaz de cadastrar propostas de melhoria para a universidade
 ### 1. Clonar o repositório
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/Grupo-4-ES-2026-1/Plataforma-de-Ideias-e-Inovacao.git
 ```
 
 Entre na pasta do projeto:
