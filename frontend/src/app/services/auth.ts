@@ -16,8 +16,8 @@ interface AuthResponse {
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'jwt_token';
-  private readonly loginEndpoint = '/auth/login';
-  private readonly logoutEndpoint = '/auth/logout';
+  private readonly loginEndpoint = 'http://localhost:8080/auth/login';
+  private readonly logoutEndpoint = 'http://localhost:8080/auth/logout';
 
   usuarioLogado = signal<string | null>(null);
   roleAtual = signal<string | null>(null);
@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   login(email: string, senha: string): Observable<boolean> {
-    const credenciais: Credenciais = { email, senha };
+    const credenciais = { email, password: senha };
 
     return this.http.post<AuthResponse>(this.loginEndpoint, credenciais).pipe(
       tap((response) => this.salvarToken(response.token)),
@@ -37,20 +37,19 @@ export class AuthService {
     );
   }
 
-// metodo de logout que avisa ao backend que o usuário quer sair, e limpa os dados locais do front
+  
   logout(): Observable<boolean> {
     return this.http.post(this.logoutEndpoint, {}).pipe(
-      tap(() => this.limparDadosLocais()), // Se a API responder OK, limpa o front
+      tap(() => this.limparDadosLocais()), 
       map(() => true),
       catchError(() => {
-        //caso a API der erro, força a limpeza local por segurança
-        this.limparDadosLocais(); 
+       
+        this.limparDadosLocais();
         return of(false);
       })
     );
   }
 
-  
   private limparDadosLocais(): void {
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem(this.TOKEN_KEY);
@@ -79,8 +78,6 @@ export class AuthService {
     this.processarToken(token);
   }
 
-
-
   private processarToken(token: string): void {
     const payload = this.decodificarToken(token);
     if (!payload) {
@@ -89,7 +86,7 @@ export class AuthService {
       return;
     }
 
-    const nome = payload['sub'] ?? payload['nome'];
+    const nome = payload['nome'] ?? payload['sub'];
     const role = payload['role'] ?? payload['roles'];
 
     this.usuarioLogado.set(typeof nome === 'string' ? nome : null);
@@ -113,4 +110,3 @@ export class AuthService {
     }
   }
 }
-

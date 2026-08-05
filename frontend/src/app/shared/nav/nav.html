@@ -5,6 +5,7 @@
 
   <div class="navbar-actions">
     @if (autenticado) {
+      <a routerLink="/home" class="navbar-link">Início</a>
       <span class="navbar-user">Olá, {{ usuarioLogado }}</span>
       <button class="btn-logout" (click)="logout()">Sair</button>
     } @else {

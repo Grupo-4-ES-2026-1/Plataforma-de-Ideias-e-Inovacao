@@ -24,11 +24,19 @@
 
   <br>
 
-  <button type="submit">
-    Entrar
+  <button type="submit" [disabled]="carregando">
+    @if (carregando) {
+      Entrando...
+    } @else {
+      Entrar
+    }
   </button>
 
 </form>
+
+@if (erro) {
+  <p class="erro">{{ erro }}</p>
+}
 
 <br>
 

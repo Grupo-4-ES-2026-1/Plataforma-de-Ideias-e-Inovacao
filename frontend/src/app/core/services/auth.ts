@@ -6,7 +6,6 @@ export interface RegisterRequest {
   nome: string;
   email: string;
   senha: string;
-  role: string;
 }
 
 @Injectable({
@@ -14,9 +13,14 @@ export interface RegisterRequest {
 })
 export class Auth {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/users';
+  private readonly apiUrl = 'http://localhost:8080/auth/register';
 
   cadastrar(dados: RegisterRequest): Observable<unknown> {
-    return this.http.post(this.apiUrl, dados);
+    const payload = {
+      nome: dados.nome,
+      email: dados.email,
+      password: dados.senha,
+    };
+    return this.http.post(this.apiUrl, payload);
   }
 }

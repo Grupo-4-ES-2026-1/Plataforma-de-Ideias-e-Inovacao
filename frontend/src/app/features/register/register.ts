@@ -29,7 +29,6 @@ export class Register {
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]],
       confirmacaoSenha: ['', [Validators.required]],
-      role: ['USER', [Validators.required]],
     },
     {
       validators: [this.senhasIguais],
@@ -46,7 +45,7 @@ export class Register {
       return;
     }
 
-    const { nome, email, senha, role } = this.formulario.getRawValue();
+    const { nome, email, senha } = this.formulario.getRawValue();
 
     this.mensagem.set('');
     this.erro.set('');
@@ -57,7 +56,6 @@ export class Register {
         nome: nome ?? '',
         email: email ?? '',
         senha: senha ?? '',
-        role: role ?? 'USER',
       })
       .pipe(
         finalize(() => {
@@ -73,7 +71,6 @@ export class Register {
             email: '',
             senha: '',
             confirmacaoSenha: '',
-            role: 'USER',
           });
         },
         error: (erro) => {

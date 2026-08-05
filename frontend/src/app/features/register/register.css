@@ -1,0 +1,90 @@
+.register-container {
+  max-width: 360px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+}
+
+label {
+  font-size: 0.85rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  margin-top: 0.3rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+button[type="submit"] {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.65rem;
+  background-color: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  background-color: #4f46e5;
+}
+
+p {
+  font-size: 0.8rem;
+  color: #dc2626;
+  margin: 0.35rem 0 0;
+}
+
+p.sucesso {
+  color: #16a34a;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+p.erro-geral {
+  color: #dc2626;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+a {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #6366f1;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
