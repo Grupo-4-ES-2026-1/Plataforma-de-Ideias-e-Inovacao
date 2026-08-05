@@ -21,6 +21,10 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("E-mail já cadastrado.");
         }
+        
+        if (user.getSenha() == null || user.getSenha().length() < 8) {
+            throw new RuntimeException("A senha deve possuir pelo menos 8 caracteres.");
+        }
 
         user.setSenha(passwordEncoder.encode(user.getSenha()));
 

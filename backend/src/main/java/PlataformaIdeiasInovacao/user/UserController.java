@@ -20,6 +20,7 @@ public class UserController {
 
         return ResponseEntity.status(201).body(novoUsuario);
     }
+    
 
     @GetMapping
     public ResponseEntity<List<User>> listarTodos() {
