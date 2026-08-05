@@ -1,0 +1,153 @@
+<section class="register-container">
+  <h2>Cadastro de Usuário</h2>
+
+  <form [formGroup]="formulario" (ngSubmit)="cadastrar()">
+    <div>
+      <label for="nome">Nome</label><br>
+
+      <input
+        id="nome"
+        type="text"
+        formControlName="nome"
+      >
+
+      @if (
+        formulario.controls.nome.touched &&
+        formulario.controls.nome.hasError('required')
+      ) {
+        <p>O nome é obrigatório.</p>
+      }
+
+      @if (
+        formulario.controls.nome.touched &&
+        formulario.controls.nome.hasError('minlength')
+      ) {
+        <p>O nome deve ter pelo menos 3 caracteres.</p>
+      }
+    </div>
+
+    <br>
+
+    <div>
+      <label for="email">E-mail</label><br>
+
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+      >
+
+      @if (
+        formulario.controls.email.touched &&
+        formulario.controls.email.hasError('required')
+      ) {
+        <p>O e-mail é obrigatório.</p>
+      }
+
+      @if (
+        formulario.controls.email.touched &&
+        formulario.controls.email.hasError('email')
+      ) {
+        <p>Digite um e-mail válido.</p>
+      }
+    </div>
+
+    <br>
+
+    <div>
+      <label for="senha">Senha</label><br>
+
+      <input
+        id="senha"
+        type="password"
+        formControlName="senha"
+      >
+
+      @if (
+        formulario.controls.senha.touched &&
+        formulario.controls.senha.hasError('required')
+      ) {
+        <p>A senha é obrigatória.</p>
+      }
+
+      @if (
+        formulario.controls.senha.touched &&
+        formulario.controls.senha.hasError('minlength')
+      ) {
+        <p>A senha deve ter pelo menos 6 caracteres.</p>
+      }
+    </div>
+
+    <br>
+
+    <div>
+      <label for="confirmacaoSenha">Confirme a senha</label><br>
+
+      <input
+        id="confirmacaoSenha"
+        type="password"
+        formControlName="confirmacaoSenha"
+      >
+
+      @if (
+        formulario.controls.confirmacaoSenha.touched &&
+        formulario.controls.confirmacaoSenha.hasError('required')
+      ) {
+        <p>A confirmação da senha é obrigatória.</p>
+      }
+
+      @if (
+        formulario.controls.confirmacaoSenha.touched &&
+        formulario.hasError('senhasDiferentes')
+      ) {
+        <p>As senhas não coincidem.</p>
+      }
+    </div>
+
+    <br>
+
+    <div>
+      <label for="role">Perfil</label><br>
+
+      <select
+        id="role"
+        formControlName="role"
+      >
+        <option value="USER">Usuário</option>
+        <option value="ADMIN">Administrador</option>
+      </select>
+
+      @if (
+        formulario.controls.role.touched &&
+        formulario.controls.role.hasError('required')
+      ) {
+        <p>Selecione um perfil.</p>
+      }
+    </div>
+
+    <br>
+
+    <button
+      type="submit"
+      [disabled]="carregando()"
+    >
+      @if (carregando()) {
+        Cadastrando...
+      } @else {
+        Cadastrar
+      }
+    </button>
+  </form>
+
+  @if (mensagem()) {
+    <p>{{ mensagem() }}</p>
+  }
+
+  @if (erro()) {
+    <p>{{ erro() }}</p>
+  }
+
+  <br>
+
+  <a href="/login">Voltar para o login</a>
+</section>
