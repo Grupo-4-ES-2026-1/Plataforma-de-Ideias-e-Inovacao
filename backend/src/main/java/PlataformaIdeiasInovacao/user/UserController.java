@@ -13,14 +13,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<User> cadastrar(@RequestBody User user) {
-
-        User novoUsuario = userService.cadastrar(user);
-
-        return ResponseEntity.status(201).body(novoUsuario);
-    }
-
     @GetMapping
     public ResponseEntity<List<User>> listarTodos() {
 

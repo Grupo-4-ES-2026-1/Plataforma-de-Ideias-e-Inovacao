@@ -16,21 +16,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User cadastrar(User user) {
-
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("E-mail já cadastrado.");
-        }
-
-        user.setSenha(passwordEncoder.encode(user.getSenha()));
-
-        if (user.getRole() == null || user.getRole().isBlank()) {
-            user.setRole("USER");
-        }
-
-        return userRepository.save(user);
-    }
-
     public List<User> listarTodos() {
         return userRepository.findAll();
     }
