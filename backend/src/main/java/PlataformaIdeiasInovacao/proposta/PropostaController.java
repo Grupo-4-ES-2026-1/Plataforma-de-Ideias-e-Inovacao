@@ -1,6 +1,8 @@
 package PlataformaIdeiasInovacao.proposta;
 
 import PlataformaIdeiasInovacao.proposta.dto.*;
+import PlataformaIdeiasInovacao.user.User;
+import PlataformaIdeiasInovacao.user.dto.UserResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +29,13 @@ public class PropostaController {
                 .map(this::paraDTO)
                 .toList();
         return ResponseEntity.ok(lista);
+    }
+
+
+    //conversor de Proposta para PropostaResponseDTO
+    private PropostaResponseDTO paraDTO(Proposta proposta) {
+        PropostaResponseDTO dto = new PropostaResponseDTO();
+        // falta: Realizar a conversão
+        return dto;
     }
 }
