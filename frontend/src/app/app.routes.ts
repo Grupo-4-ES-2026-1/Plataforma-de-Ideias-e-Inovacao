@@ -4,6 +4,8 @@ import { Login } from './features/login/login';
 import { Home } from './features/home/home';
 import { authGuard } from './guards/auth.guard';
 import { PropostasListaComponent } from './features/propostas-lista/propostas-lista'; 
+import { PropostaDetalheComponent } from './features/proposta-detalhe/proposta-detalhe';
+
 export const routes: Routes = [
   {
     path: '',
@@ -30,6 +32,7 @@ export const routes: Routes = [
   },
   {
     path: 'propostas/:id',
+    component: PropostaDetalheComponent,
     canActivate: [authGuard]
   }
 ];
