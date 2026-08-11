@@ -3,7 +3,7 @@ import { Register } from './features/register/register';
 import { Login } from './features/login/login';
 import { Home } from './features/home/home';
 import { authGuard } from './guards/auth.guard';
-
+import { PropostasListaComponent } from './features/propostas-lista/propostas-lista'; 
 export const routes: Routes = [
   {
     path: '',
@@ -25,6 +25,7 @@ export const routes: Routes = [
   },
   {
     path: 'propostas',
+    component: PropostasListaComponent,
     canActivate: [authGuard]
   },
   {
