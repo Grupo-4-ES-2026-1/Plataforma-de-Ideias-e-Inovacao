@@ -1,15 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PropostaService } from '../../../core/services/proposta';
+import { PropostaService } from '../../core/services/proposta';
 
 @Component({
-  selector: 'app-cadastro-proposta',
+  selector: 'app-proposta-cadastro',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './cadastro-proposta.html',
-  styleUrl: './cadastro-proposta.css'
+  templateUrl: './proposta-cadastro.html',
+  styleUrl: './proposta-cadastro.css'
 })
-export class CadastroPropostaComponent {
+export class PropostaCadastroComponent {
   private readonly fb = inject(FormBuilder);
   private readonly propostaService = inject(PropostaService);
 
