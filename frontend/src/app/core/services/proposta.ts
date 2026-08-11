@@ -8,6 +8,10 @@ export interface PropostaRequest {
   categoria: string;
 }
 
+export interface PropostaResponse extends PropostaRequest {
+  id: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -17,5 +21,13 @@ export class PropostaService {
 
   cadastrar(dados: PropostaRequest): Observable<unknown> {
     return this.http.post(this.apiUrl, dados);
+  }
+
+  listar(): Observable<PropostaResponse[]> {
+    return this.http.get<PropostaResponse[]>(this.apiUrl);
+  }
+
+  buscarPorId(id: number): Observable<PropostaResponse> {
+    return this.http.get<PropostaResponse>(`${this.apiUrl}/${id}`);
   }
 }
