@@ -2,13 +2,13 @@ package PlataformaIdeiasInovacao.proposta;
 
 
 import PlataformaIdeiasInovacao.auth.dto.RegisterDTO;
+import PlataformaIdeiasInovacao.user.dto.UserResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/proposta")
@@ -21,5 +21,13 @@ public class PropostaController {
     public ResponseEntity<PropostaResponseDTO> register(@RequestBody @Valid PropostaRequestDTO data){
         PropostaResponseDTO response = this.propostaService.register(data);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/propostas")
+    public ResponseEntity<List<PropostaResponseDTO>> listarTodos() {
+        List<PropostaResponseDTO> lista = propostaService.listarTodos().stream()
+                .map(this::paraDTO)
+                .toList();
+        return ResponseEntity.ok(lista);
     }
 }
