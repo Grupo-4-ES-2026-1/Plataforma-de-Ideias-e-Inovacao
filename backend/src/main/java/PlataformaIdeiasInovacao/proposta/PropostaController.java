@@ -18,8 +18,8 @@ public class PropostaController {
    private PropostaService propostaService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid PropostaRequestDTO data){
-        this.propostaService.register(data);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PropostaResponseDTO> register(@RequestBody @Valid PropostaRequestDTO data){
+        PropostaResponseDTO response = this.propostaService.register(data);
+        return ResponseEntity.ok(response);
     }
 }
