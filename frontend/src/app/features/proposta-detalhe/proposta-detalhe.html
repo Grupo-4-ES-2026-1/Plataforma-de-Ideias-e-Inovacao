@@ -1,0 +1,17 @@
+<div style="padding: 20px;">
+  <h2>Detalhes da Proposta #{{ proposta.id }}</h2>
+
+  <!-- card com detalhes -->
+  <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+    <h3>{{ proposta.titulo }}</h3>
+    <p><strong>Categoria:</strong> {{ proposta.categoria }}</p>
+    <hr>
+    <p><strong>Descrição Completa:</strong></p>
+    <p>{{ proposta.descricao }}</p>
+  </div>
+
+  <!-- botão para voltar à listagem -->
+  <button routerLink="/propostas" style="padding: 10px; cursor: pointer;">
+    Voltar para a Lista
+  </button>
+</div>
