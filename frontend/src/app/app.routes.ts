@@ -22,5 +22,13 @@ export const routes: Routes = [
     path: 'home',
     component: Home,
     canActivate: [authGuard]
+  },
+  {
+    path: 'propostas',
+    canActivate: [authGuard]
+  },
+  {
+    path: 'propostas/:id',
+    canActivate: [authGuard]
   }
 ];
