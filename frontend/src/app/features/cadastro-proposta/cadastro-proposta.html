@@ -1,0 +1,53 @@
+<section class="cadastro-proposta-container">
+  <h2>Nova Proposta</h2>
+
+  <form [formGroup]="formulario" (ngSubmit)="cadastrar()">
+    <div>
+      <label for="titulo">Título</label><br>
+      <input id="titulo" type="text" formControlName="titulo">
+      
+      @if (formulario.controls.titulo.touched && formulario.controls.titulo.hasError('required')) {
+        <p>O título é obrigatório.</p>
+      }
+    </div>
+
+    <div>
+      <label for="descricao">Descrição</label><br>
+      <textarea id="descricao" formControlName="descricao"></textarea>
+      
+      @if (formulario.controls.descricao.touched && formulario.controls.descricao.hasError('required')) {
+        <p>A descrição é obrigatória.</p>
+      }
+    </div>
+
+    <div>
+      <label for="categoria">Categoria</label><br>
+      <select id="categoria" formControlName="categoria">
+        <option value="" disabled selected>Selecione uma categoria</option>
+        <option value="TECNOLOGIA">Tecnologia</option>
+        <option value="EDUCACAO">Educação</option>
+        <option value="MEIO_AMBIENTE">Meio Ambiente</option>
+      </select>
+
+      @if (formulario.controls.categoria.touched && formulario.controls.categoria.hasError('required')) {
+        <p>A categoria é obrigatória.</p>
+      }
+    </div>
+
+    <button type="submit" [disabled]="carregando()">
+      @if (carregando()) {
+        Cadastrando...
+      } @else {
+        Cadastrar Proposta
+      }
+    </button>
+  </form>
+
+  @if (mensagem()) {
+    <p>{{ mensagem() }}</p>
+  }
+
+  @if (erro()) {
+    <p>{{ erro() }}</p>
+  }
+</section>
