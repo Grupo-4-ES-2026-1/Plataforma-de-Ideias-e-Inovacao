@@ -33,7 +33,7 @@ public class PropostaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PropostaResponseDTO> buscarPorId(@PathVariable Long id) {
-        return PropostaService.buscarPorId(id)
+        return propostaService.buscarPorId(id)
                 .map(this::paraDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
