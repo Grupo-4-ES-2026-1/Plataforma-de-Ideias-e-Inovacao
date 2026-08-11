@@ -31,6 +31,14 @@ public class PropostaController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PropostaResponseDTO> buscarPorId(@PathVariable Long id) {
+        return PropostaService.buscarPorId(id)
+                .map(this::paraDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 
     //conversor de Proposta para PropostaResponseDTO
     private PropostaResponseDTO paraDTO(Proposta proposta) {
