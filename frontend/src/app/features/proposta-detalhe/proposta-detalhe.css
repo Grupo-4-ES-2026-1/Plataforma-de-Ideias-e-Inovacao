@@ -1,0 +1,73 @@
+.proposta-detalhe-container {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.proposta-detalhe-container h2 {
+  text-align: center;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.status-mensagem {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+.status-mensagem.erro {
+  color: #dc2626;
+}
+
+.proposta-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+}
+
+.proposta-card h3 {
+  margin: 0 0 0.5rem;
+  color: #1f2937;
+}
+
+.proposta-categoria,
+.proposta-status {
+  font-size: 0.85rem;
+  color: #6366f1;
+  font-weight: 500;
+  margin: 0.25rem 0;
+}
+
+.proposta-card hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1rem 0;
+}
+
+.proposta-descricao {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.btn-voltar {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0.6rem 1.2rem;
+  background-color: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #4f46e5;
+}
