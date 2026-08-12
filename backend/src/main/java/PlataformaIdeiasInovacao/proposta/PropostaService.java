@@ -1,17 +1,18 @@
 package PlataformaIdeiasInovacao.proposta;
 
-import PlataformaIdeiasInovacao.proposta.dto.PropostaRequestDTO;
-import PlataformaIdeiasInovacao.proposta.dto.PropostaResponseDTO;
-import PlataformaIdeiasInovacao.user.User;
-import PlataformaIdeiasInovacao.user.UserRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import PlataformaIdeiasInovacao.proposta.dto.PropostaRequestDTO;
+import PlataformaIdeiasInovacao.proposta.dto.PropostaResponseDTO;
+import PlataformaIdeiasInovacao.user.User;
+import PlataformaIdeiasInovacao.user.UserRepository;
 
 @Service
 public class PropostaService {
@@ -22,45 +23,39 @@ public class PropostaService {
     @Autowired
     private UserRepository userRepository;
 
-    public PropostaResponseDTO register(PropostaRequestDTO data) {
-
+    public PropostaResponseDTO cadastrar(PropostaRequestDTO data) {
         Proposta proposta = new Proposta();
 
         proposta.setTitulo(data.getTitulo());
         proposta.setDescricao(data.getDescricao());
         proposta.setCategoria(data.getCategoria());
-
         proposta.setStatus("SUBMETIDA");
         proposta.setDataCriacao(LocalDateTime.now());
 
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
         User autor = userRepository.findByEmail(email);
-
         if (autor == null) {
             throw new RuntimeException("Usuário autenticado não encontrado.");
         }
-
         proposta.setAutor(autor);
 
         Proposta salva = propostaRepository.save(proposta);
-
         return paraDTO(salva);
     }
 
-    public List<Proposta> listarTodos() {
-        return propostaRepository.findAll();
+    public List<PropostaResponseDTO> listarTodos() {
+        return propostaRepository.findAll().stream()
+                .map(this::paraDTO)
+                .toList();
     }
 
-    public Optional<Proposta> buscarPorId(Long id) {
-        return propostaRepository.findById(id);
+    public Optional<PropostaResponseDTO> buscarPorId(Long id) {
+        return propostaRepository.findById(id).map(this::paraDTO);
     }
 
     private PropostaResponseDTO paraDTO(Proposta proposta) {
-
         PropostaResponseDTO dto = new PropostaResponseDTO();
 
         dto.setId(proposta.getId());

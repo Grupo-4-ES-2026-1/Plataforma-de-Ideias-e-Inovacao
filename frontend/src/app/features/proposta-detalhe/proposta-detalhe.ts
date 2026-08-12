@@ -1,36 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { PropostaService, PropostaResponse } from '../../core/services/proposta';
 
 @Component({
   selector: 'app-proposta-detalhe',
   standalone: true,
-  imports: [CommonModule, RouterModule], 
+  imports: [CommonModule, RouterModule],
   templateUrl: './proposta-detalhe.html',
   styleUrl: './proposta-detalhe.css'
 })
 export class PropostaDetalheComponent implements OnInit {
-  //objeto vazio para iniciar a tela
-  proposta = {
-    id: 0,
-    titulo: 'Carregando...',
-    descricao: 'Carregando...',
-    categoria: 'Carregando...'
-  };
+  private readonly route = inject(ActivatedRoute);
+  private readonly propostaService = inject(PropostaService);
 
-  constructor(private route: ActivatedRoute) {}
+  proposta = signal<PropostaResponse | null>(null);
+  carregando = signal(true);
+  erro = signal('');
 
   ngOnInit(): void {
-    //aqui pega a id da proposta que está na url, por exemplo: /propostas/1, pega o 1
-    const idDaUrl = this.route.snapshot.paramMap.get('id');
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = idParam ? Number(idParam) : NaN;
 
-    //simula uma busca no banco de dados
-    if (idDaUrl === '1') {
-      this.proposta = { id: 1, titulo: 'Melhoria no Wi-Fi da Biblioteca', descricao: 'Instalar novos roteadores para suportar mais alunos conectados simultaneamente.', categoria: 'Infraestrutura' };
-    } else if (idDaUrl === '2') {
-      this.proposta = { id: 2, titulo: 'Criar Laboratório Maker', descricao: 'Disponibilizar impressoras 3D e kits de robótica para os alunos.', categoria: 'Inovação e Tecnologia' };
-    } else {
-      this.proposta = { id: 999, titulo: 'Proposta não encontrada', descricao: 'Não foi possível carregar os detalhes.', categoria: 'Erro' };
+    if (!id || Number.isNaN(id)) {
+      this.erro.set('Proposta não encontrada.');
+      this.carregando.set(false);
+      return;
     }
+
+    this.propostaService.buscarPorId(id).subscribe({
+      next: (dados) => {
+        this.proposta.set(dados);
+        this.carregando.set(false);
+      },
+      error: () => {
+        this.erro.set('Não foi possível carregar os detalhes da proposta.');
+        this.carregando.set(false);
+      }
+    });
   }
 }

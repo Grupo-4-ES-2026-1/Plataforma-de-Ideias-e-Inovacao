@@ -1,8 +1,7 @@
 package PlataformaIdeiasInovacao.proposta;
 
-import PlataformaIdeiasInovacao.proposta.dto.*;
-import PlataformaIdeiasInovacao.user.User;
-import PlataformaIdeiasInovacao.user.dto.UserResponseDTO;
+import PlataformaIdeiasInovacao.proposta.dto.PropostaRequestDTO;
+import PlataformaIdeiasInovacao.proposta.dto.PropostaResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,39 +10,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/proposta")
+@RequestMapping("/propostas")
 public class PropostaController {
 
     @Autowired
-   private PropostaService propostaService;
+    private PropostaService propostaService;
 
-    @PostMapping("/register")
-    public ResponseEntity<PropostaResponseDTO> register(@RequestBody @Valid PropostaRequestDTO data){
-        PropostaResponseDTO response = this.propostaService.register(data);
+    @PostMapping
+    public ResponseEntity<PropostaResponseDTO> cadastrar(@RequestBody @Valid PropostaRequestDTO data) {
+        PropostaResponseDTO response = propostaService.cadastrar(data);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/propostas")
+    @GetMapping
     public ResponseEntity<List<PropostaResponseDTO>> listarTodos() {
-        List<PropostaResponseDTO> lista = propostaService.listarTodos().stream()
-                .map(this::paraDTO)
-                .toList();
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(propostaService.listarTodos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PropostaResponseDTO> buscarPorId(@PathVariable Long id) {
         return propostaService.buscarPorId(id)
-                .map(this::paraDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-
-    //conversor de Proposta para PropostaResponseDTO
-    private PropostaResponseDTO paraDTO(Proposta proposta) {
-        PropostaResponseDTO dto = new PropostaResponseDTO();
-        // falta: Realizar a conversão
-        return dto;
     }
 }

@@ -6,8 +6,8 @@ import { PropostaService } from '../../core/services/proposta';
   selector: 'app-proposta-cadastro',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './proposta-cadastro.html',
-  styleUrl: './proposta-cadastro.css'
+  templateUrl: './cadastro-proposta.html',
+  styleUrl: './cadastro-proposta.css'
 })
 export class PropostaCadastroComponent {
   private readonly fb = inject(FormBuilder);
