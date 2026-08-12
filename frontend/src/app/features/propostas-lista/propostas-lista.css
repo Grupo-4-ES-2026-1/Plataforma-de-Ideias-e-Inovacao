@@ -1,0 +1,72 @@
+.propostas-lista-container {
+  max-width: 720px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.propostas-lista-container h2 {
+  text-align: center;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.status-mensagem {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+.status-mensagem.erro {
+  color: #dc2626;
+}
+
+.propostas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.proposta-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+}
+
+.proposta-card h3 {
+  margin: 0 0 0.5rem;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.proposta-categoria {
+  font-size: 0.8rem;
+  color: #6366f1;
+  font-weight: 500;
+  margin: 0 0 0.5rem;
+}
+
+.proposta-descricao {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin: 0 0 1rem;
+  line-height: 1.4;
+}
+
+.proposta-card button {
+  padding: 0.5rem 1rem;
+  background-color: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.proposta-card button:hover {
+  background-color: #4f46e5;
+}

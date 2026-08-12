@@ -1,18 +1,26 @@
-<div style="padding: 20px;">
+<section class="propostas-lista-container">
   <h2>Lista de Propostas</h2>
 
-  <div style="display: flex; flex-direction: column; gap: 15px;">
-    <!-- o @for repete este bloco para cada proposta na nossa lista -->
-    @for (proposta of propostas; track proposta.id) {
-      <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px;">
-        <!-- Critérios de Aceite: Título, Categoria e Descrição -->
-        <h3>{{ proposta.titulo }}</h3>
-        <p><strong>Categoria:</strong> {{ proposta.categoria }}</p>
-        <p>{{ proposta.descricao }}</p>
-        <button [routerLink]="['/propostas', proposta.id]">Ver Detalhes</button>
-      </div>
-    } @empty {
-      <p>Nenhuma proposta cadastrada no momento.</p>
-    }
-  </div>
-</div>
+  @if (carregando()) {
+    <p class="status-mensagem">Carregando propostas...</p>
+  }
+
+  @if (erro()) {
+    <p class="status-mensagem erro">{{ erro() }}</p>
+  }
+
+  @if (!carregando() && !erro()) {
+    <div class="propostas-grid">
+      @for (proposta of propostas(); track proposta.id) {
+        <div class="proposta-card">
+          <h3>{{ proposta.titulo }}</h3>
+          <p class="proposta-categoria"><strong>Categoria:</strong> {{ proposta.categoria }}</p>
+          <p class="proposta-descricao">{{ proposta.descricao }}</p>
+          <button [routerLink]="['/propostas', proposta.id]">Ver Detalhes</button>
+        </div>
+      } @empty {
+        <p class="status-mensagem">Nenhuma proposta cadastrada no momento.</p>
+      }
+    </div>
+  }
+</section>

@@ -10,6 +10,9 @@ export interface PropostaRequest {
 
 export interface PropostaResponse extends PropostaRequest {
   id: number;
+  status: string;
+  autorId?: number;
+  dataCriacao?: string;
 }
 
 @Injectable({
@@ -19,8 +22,8 @@ export class PropostaService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost:8080/propostas';
 
-  cadastrar(dados: PropostaRequest): Observable<unknown> {
-    return this.http.post(this.apiUrl, dados);
+  cadastrar(dados: PropostaRequest): Observable<PropostaResponse> {
+    return this.http.post<PropostaResponse>(this.apiUrl, dados);
   }
 
   listar(): Observable<PropostaResponse[]> {
