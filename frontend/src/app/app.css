@@ -1,0 +1,14 @@
+main {
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+main.content-shifted {
+  margin-left: 240px;
+}
+
+@media (max-width: 768px) {
+  main.content-shifted {
+    margin-left: 0;
+  }
+}

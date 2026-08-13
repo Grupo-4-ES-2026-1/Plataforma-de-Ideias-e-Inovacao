@@ -1,5 +1,15 @@
 <section class="home-container">
-  <h2>Bem-vindo(a), {{ usuarioLogado }}!</h2>
-  <p>Você está autenticado como <strong>{{ roleAtual }}</strong>.</p>
-  <p>Esta página só pode ser acessada por usuários autenticados (protegida pelo AuthGuard).</p>
+  <h2>Olá, {{ usuarioLogado }}!</h2>
+  <p class="home-subtitulo">Bem-vindo(a) à Plataforma de Ideias e Inovação.</p>
+
+  @if (totalPropostas() !== null) {
+    <p class="home-resumo">
+      Atualmente há <strong>{{ totalPropostas() }}</strong> proposta(s) cadastrada(s) na plataforma.
+    </p>
+  }
+
+  <div class="home-acoes">
+    <a routerLink="/propostas" class="home-btn home-btn-secundario">Ver Propostas</a>
+    <a routerLink="/propostas/nova" class="home-btn home-btn-primario">+ Nova Proposta</a>
+  </div>
 </section>

@@ -1,5 +1,8 @@
 <section class="propostas-lista-container">
-  <h2>Lista de Propostas</h2>
+  <div class="propostas-header">
+    <h2>Lista de Propostas</h2>
+    <a routerLink="/propostas/nova" class="btn-nova-proposta">+ Nova Proposta</a>
+  </div>
 
   @if (carregando()) {
     <p class="status-mensagem">Carregando propostas...</p>

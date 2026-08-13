@@ -1,9 +1,9 @@
 .home-container {
-  max-width: 480px;
-  margin: 3rem auto;
-  padding: 2rem;
+  max-width: 520px;
+  margin: 4rem auto;
+  padding: 2.5rem;
   border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   font-family: system-ui, -apple-system, sans-serif;
   text-align: center;
@@ -11,11 +11,55 @@
 
 .home-container h2 {
   color: #1f2937;
-  margin-bottom: 1rem;
+  margin: 0 0 0.5rem;
+  font-size: 1.6rem;
 }
 
-.home-container p {
+.home-subtitulo {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin: 0 0 1.5rem;
+}
+
+.home-resumo {
   color: #374151;
   font-size: 0.9rem;
-  margin: 0.5rem 0;
+  margin: 0 0 2rem;
+  background-color: #f3f4f6;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+}
+
+.home-acoes {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.home-btn {
+  padding: 0.65rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.home-btn-primario {
+  background-color: #6366f1;
+  color: #fff;
+}
+
+.home-btn-primario:hover {
+  background-color: #4f46e5;
+}
+
+.home-btn-secundario {
+  background-color: #fff;
+  color: #6366f1;
+  border: 1px solid #6366f1;
+}
+
+.home-btn-secundario:hover {
+  background-color: #eef2ff;
 }
