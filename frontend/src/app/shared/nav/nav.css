@@ -1,69 +1,240 @@
-.navbar {
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  background-color: #1f2937;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, sans-serif;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1.25rem;
+  border-bottom: 1px solid #374151;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background-color: #6366f1;
+  color: #fff;
+}
+
+.sidebar-logo svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #f9fafb;
+  line-height: 1.3;
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.25rem 0.75rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  color: #d1d5db;
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.sidebar-link:hover {
+  background-color: #374151;
+  color: #fff;
+}
+
+.sidebar-link.active {
+  background-color: #37415170;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 #6366f1;
+}
+
+.sidebar-link-cta {
+  margin-top: 0.5rem;
+  background-color: #6366f1;
+  color: #fff;
+}
+
+.sidebar-link-cta:hover {
+  background-color: #4f46e5;
+  color: #fff;
+}
+
+.sidebar-link-cta.active {
+  background-color: #4f46e5;
+  box-shadow: none;
+}
+
+.sidebar-footer {
+  padding: 1rem 1.25rem 1.25rem;
+  border-top: 1px solid #374151;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.sidebar-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: #4b5563;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.sidebar-username {
+  font-size: 0.82rem;
+  color: #f3f4f6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background-color: transparent;
+  border: 1px solid #4b5563;
+  border-radius: 8px;
+  color: #d1d5db;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.sidebar-logout svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sidebar-logout:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+  color: #fff;
+}
+
+.topbar-guest {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.9rem 1.5rem;
   background-color: #1f2937;
-  color: #ffffff;
+  color: #fff;
   font-family: system-ui, -apple-system, sans-serif;
 }
 
-.navbar-brand {
+.topbar-brand {
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 }
 
-.navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.navbar-user {
-  font-size: 0.9rem;
-  color: #d1d5db;
-}
-
-.navbar-link {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.navbar-link:hover {
-  text-decoration: underline;
-}
-
-.btn-logout {
-  background-color: #ef4444;
-  color: #ffffff;
-  border: none;
-  padding: 0.4rem 0.9rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.btn-logout:hover {
-  background-color: #dc2626;
-}
-
-.navbar-cta {
-  background-color: #6366f1;
+.topbar-link {
   color: #fff;
   text-decoration: none;
+  font-size: 0.9rem;
   padding: 0.4rem 0.9rem;
   border-radius: 6px;
-  font-size: 0.85rem;
+  background-color: #6366f1;
   transition: background-color 0.2s ease;
 }
 
-.navbar-cta:hover {
+.topbar-link:hover {
   background-color: #4f46e5;
 }
 
-.navbar-user {
-  padding-left: 0.5rem;
-  border-left: 1px solid #4b5563;
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+  }
+
+  .sidebar-brand {
+    border-bottom: none;
+    padding: 0;
+  }
+
+  .sidebar-title {
+    display: none;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    padding: 0;
+    gap: 0.4rem;
+  }
+
+  .sidebar-link span:not(.sidebar-avatar) {
+    display: none;
+  }
+
+  .sidebar-footer {
+    border-top: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sidebar-user {
+    margin-bottom: 0;
+  }
+
+  .sidebar-username {
+    display: none;
+  }
+
+  .sidebar-logout span {
+    display: none;
+  }
 }

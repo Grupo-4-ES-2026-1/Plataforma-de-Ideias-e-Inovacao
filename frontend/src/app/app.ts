@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Nav } from './shared/nav/nav';
+import { AuthService } from './services/auth';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,9 @@ import { Nav } from './shared/nav/nav';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('frontend');
+  private readonly auth = inject(AuthService);
+
+  get autenticado() {
+    return this.auth.autenticado();
+  }
 }

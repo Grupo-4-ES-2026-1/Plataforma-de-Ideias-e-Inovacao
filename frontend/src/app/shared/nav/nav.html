@@ -1,17 +1,62 @@
-<nav class="navbar">
-  <div class="navbar-brand">
-    Plataforma de Ideias e Inovação
-  </div>
+@if (autenticado) {
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="sidebar-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18h6" />
+              <path d="M10 22h4" />
+              <path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2Z" />
+            </svg>
+      </span>
+      <span class="sidebar-title">Plataforma de<br>Ideias e Inovação</span>
+    </div>
 
-  <div class="navbar-actions">
-    @if (autenticado) {
-      <a routerLink="/home" class="navbar-link">Início</a>
-      <a routerLink="/propostas" class="navbar-link">Propostas</a>
-      <a routerLink="/propostas/nova" class="navbar-cta">+ Nova Proposta</a>
-      <span class="navbar-user">Olá, {{ usuarioLogado }}</span>
-      <button class="btn-logout" (click)="logout()">Sair</button>
-    } @else {
-      <a routerLink="/login" class="navbar-link">Entrar</a>
-    }
-  </div>
-</nav>
+    <nav class="sidebar-nav">
+      <a routerLink="/home" routerLinkActive="active" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10.5 12 3l9 7.5" />
+          <path d="M5 9.5V21h14V9.5" />
+        </svg>
+        <span>Início</span>
+      </a>
+
+      <a routerLink="/propostas" routerLinkActive="active" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="4" width="16" height="4" rx="1" />
+          <rect x="4" y="10" width="16" height="4" rx="1" />
+          <rect x="4" y="16" width="16" height="4" rx="1" />
+        </svg>
+        <span>Propostas</span>
+      </a>
+
+      <a routerLink="/propostas/nova" routerLinkActive="active" class="sidebar-link sidebar-link-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 8v8M8 12h8" />
+        </svg>
+        <span>Nova Proposta</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <span class="sidebar-avatar">{{ iniciais() }}</span>
+        <span class="sidebar-username">{{ usuarioLogado }}</span>
+      </div>
+
+      <button class="sidebar-logout" (click)="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <path d="M16 17l5-5-5-5" />
+          <path d="M21 12H9" />
+        </svg>
+        <span>Sair</span>
+      </button>
+    </div>
+  </aside>
+} @else {
+  <header class="topbar-guest">
+    <span class="topbar-brand">Plataforma de Ideias e Inovação</span>
+    <a routerLink="/login" class="topbar-link">Entrar</a>
+  </header>
+}
