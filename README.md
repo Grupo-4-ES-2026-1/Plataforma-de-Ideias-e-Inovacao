@@ -1,8 +1,12 @@
-# Plataforma de Ideias e Inovação
+# 💡 Plataforma de Ideias e Inovação
+
+Um espaço para a comunidade da UFAPE propor, discutir e acompanhar ideias de melhoria para a universidade.
 
 ## :octocat: Integrantes
 
-[Laissa Gama](https://github.com/laissagamma) | [Mário Ramon](https://github.com/joyeuxpierrot) | [Pedro Duarte](https://github.com/PedrokaIsACoder) | [José Jonathan](https://github.com/jonathanbraga47) | [Antonio Victor](https://github.com/vieiraAnttonio)
+| | | | | |
+|:---:|:---:|:---:|:---:|:---:|
+| [Laissa Gama](https://github.com/laissagamma) | [Mário Ramon](https://github.com/joyeuxpierrot) | [Pedro Duarte](https://github.com/PedrokaIsACoder) | [José Jonathan](https://github.com/jonathanbraga47) | [Antonio Victor](https://github.com/vieiraAnttonio) |
 
 ## 📃 Sobre o Projeto
 
@@ -12,78 +16,111 @@ O sistema se propõe a catalogar as ideias da comunidade para melhorar a UFAPE, 
 
 ## 📍 Objetivos
 
-O usuário deve ser capaz de cadastrar propostas de melhoria para a universidade, comentar e discutir as propostas de outros usuários, e votar nas ideias que considera mais relevantes. Cada proposta possui um status que evolui ao longo do tempo (submetida, em análise, aprovada, implantada ou rejeitada), permitindo o acompanhamento do seu ciclo de vida. O sistema também conta com um dashboard de indicadores, exibindo métricas sobre as propostas ao longo do tempo, como volume de submissões, taxa de aprovação e engajamento da comunidade.
+O usuário deve ser capaz de se cadastrar e autenticar no sistema, cadastrar propostas de melhoria para a universidade, e consultar as propostas já existentes. Cada proposta possui um status que evolui ao longo do tempo (submetida, em análise, aprovada, implantada ou rejeitada), permitindo o acompanhamento do seu ciclo de vida. Futuramente, o sistema também contará com comentários, votação e um dashboard de indicadores sobre as propostas ao longo do tempo.
+
+## ✨ Funcionalidades já implementadas
+
+- 🔐 **Autenticação e autorização** completas com JWT (cadastro, login e logout)
+- 👤 Controle de acesso por perfil (**USER** / **ADMIN**)
+- 📝 **Cadastro de propostas**, vinculado ao usuário autenticado
+- 📋 **Listagem e detalhamento** de propostas
+- 🛡️ Rotas protegidas no frontend (Guard) e no backend (Spring Security + Filter JWT)
+- ✅ Testes automatizados (JUnit no backend, Vitest no frontend)
 
 ## 🛠️ Tecnologias Usadas
 
 ### Frontend
 - [Angular](https://angular.dev/)
+- JWT para autenticação, com interceptor HTTP e rotas protegidas por Guard
 
 ### Backend
 - [Java](https://www.java.com/)
 - [Spring Boot](https://spring.io/projects/spring-boot)
-- [Spring Data JPA]
-- [Spring Security]
-- [Maven]
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [Spring Security](https://spring.io/projects/spring-security) + JWT
+- [Maven](https://maven.apache.org/)
 
 ### Banco de Dados
+- MySQL 8.4 (via Docker)
 
-- MySQL 8.4
-- Docker (para execução do banco)
+### Testes
+- [JUnit 5](https://junit.org/junit5/) + Mockito (backend)
+- [Vitest](https://vitest.dev/) (frontend)
 
-## Como executar o projeto
+### Gerenciamento
+- GitHub Projects (Quadro Scrum)
+
+---
+
+## 🚀 Como executar o projeto
 
 ### 1. Clonar o repositório
 
 ```bash
 git clone https://github.com/Grupo-4-ES-2026-1/Plataforma-de-Ideias-e-Inovacao.git
-```
-
-Entre na pasta do projeto:
-
-```bash
 cd Plataforma-de-Ideias-e-Inovacao
 ```
 
----
-
 ### 2. Subir o banco de dados
 
-Na raiz do projeto execute:
+Na raiz do projeto:
 
 ```bash
 docker-compose up -d
 ```
 
-Isso iniciará um container MySQL com:
+Isso inicia um container MySQL com:
 
 - Banco: `plataforma_ideias`
 - Usuário: `grupo4`
 - Senha: `123456`
 
-### 3. Executar o backend
+> 💡 Se já tiver rodado o projeto antes e o schema do banco estiver desatualizado, use `docker-compose down -v && docker-compose up -d` para recriar o banco do zero.
 
-Entre na pasta do backend:
+### 3. Executar o backend
 
 ```bash
 cd backend
+./mvnw spring-boot:run
 ```
 
-Execute:
+A API ficará disponível em `http://localhost:8080`.
+
+### 4. Executar o frontend
+
+Em outro terminal:
 
 ```bash
-mvn spring-boot:run
+cd frontend
+npm install
+ng serve
 ```
 
-A aplicação ficará disponível em:
+A aplicação ficará disponível em `http://localhost:4200`.
 
+---
+
+## 🧪 Rodando os testes
+
+### Backend (JUnit)
+
+```bash
+cd backend
+./mvnw test
 ```
-http://localhost:8080
+
+### Frontend (Vitest)
+
+```bash
+cd frontend
+ng test --watch=false
 ```
 
-## Configuração do banco
+---
 
-O backend utiliza as seguintes configurações:
+## ⚙️ Configuração do banco
+
+O backend utiliza as seguintes configurações (definidas em `application.properties`):
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/plataforma_ideias
@@ -91,9 +128,8 @@ spring.datasource.username=grupo4
 spring.datasource.password=123456
 ```
 
-### Gerenciamento
-- GitHub Projects (Quadro Scrum)
+---
 
 ## 🚧 Status do Projeto
 
-Em desenvolvimento — Primeira Iteração
+Em desenvolvimento — Terceira Iteração
