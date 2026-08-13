@@ -70,3 +70,28 @@
 .proposta-card button:hover {
   background-color: #4f46e5;
 }
+
+.propostas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.propostas-header h2 {
+  margin: 0;
+}
+
+.btn-nova-proposta {
+  padding: 0.5rem 1rem;
+  background-color: #6366f1;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-nova-proposta:hover {
+  background-color: #4f46e5;
+}

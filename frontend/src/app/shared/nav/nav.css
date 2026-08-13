@@ -48,3 +48,22 @@
 .btn-logout:hover {
   background-color: #dc2626;
 }
+
+.navbar-cta {
+  background-color: #6366f1;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-cta:hover {
+  background-color: #4f46e5;
+}
+
+.navbar-user {
+  padding-left: 0.5rem;
+  border-left: 1px solid #4b5563;
+}
