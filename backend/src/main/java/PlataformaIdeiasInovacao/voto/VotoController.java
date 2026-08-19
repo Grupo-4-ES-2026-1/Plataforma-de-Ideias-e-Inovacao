@@ -1,6 +1,8 @@
 package PlataformaIdeiasInovacao.voto;
 
 import PlataformaIdeiasInovacao.user.User;
+import PlataformaIdeiasInovacao.voto.dto.VotoResponseDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,14 +16,14 @@ public class VotoController {
     private VotoService votoService;
 
     @PostMapping("/{propostaId}/voto")
-    public ResponseEntity<Voto> votar(
-            @PathVariable Long propostaId,
-            Authentication authentication) {
+    public ResponseEntity<VotoResponseDTO> votar(
+        @PathVariable Long propostaId,
+        Authentication authentication) {
 
-        User usuario = (User) authentication.getPrincipal();
+            User usuario = (User) authentication.getPrincipal();
 
-        Voto voto = votoService.votar(propostaId, usuario);
+            VotoResponseDTO voto = votoService.votar(propostaId, usuario);
 
-        return ResponseEntity.status(201).body(voto);
+            return ResponseEntity.status(201).body(voto);
     }
 }

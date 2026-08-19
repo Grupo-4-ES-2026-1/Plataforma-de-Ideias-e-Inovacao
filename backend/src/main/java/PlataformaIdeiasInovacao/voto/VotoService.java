@@ -3,6 +3,8 @@ package PlataformaIdeiasInovacao.voto;
 import PlataformaIdeiasInovacao.proposta.Proposta;
 import PlataformaIdeiasInovacao.proposta.PropostaRepository;
 import PlataformaIdeiasInovacao.user.User;
+import PlataformaIdeiasInovacao.voto.dto.VotoResponseDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,7 @@ public class VotoService {
     @Autowired
     private PropostaRepository propostaRepository;
 
-    public Voto votar(Long propostaId, User usuario) {
+    public VotoResponseDTO votar(Long propostaId, User usuario) {
 
         Proposta proposta = propostaRepository.findById(propostaId)
                 .orElseThrow(() -> new RuntimeException("Proposta não encontrada."));
@@ -28,6 +30,14 @@ public class VotoService {
         voto.setUsuario(usuario);
         voto.setProposta(proposta);
 
-        return votoRepository.save(voto);
+        Voto salvo = votoRepository.save(voto);
+
+        VotoResponseDTO response = new VotoResponseDTO();
+
+        response.setId(salvo.getId());
+        response.setPropostaId(salvo.getProposta().getId());
+        response.setUsuarioId(salvo.getUsuario().getId());
+
+        return response;
     }
 }
