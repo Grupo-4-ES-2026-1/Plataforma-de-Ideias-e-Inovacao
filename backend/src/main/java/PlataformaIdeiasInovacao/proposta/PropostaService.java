@@ -64,6 +64,7 @@ public class PropostaService {
         dto.setCategoria(proposta.getCategoria());
         dto.setStatus(proposta.getStatus());
         dto.setDataCriacao(proposta.getDataCriacao());
+        dto.setAutorNome(proposta.getAutor().getNome());
 
         if (proposta.getAutor() != null) {
             dto.setAutorId(proposta.getAutor().getId());
