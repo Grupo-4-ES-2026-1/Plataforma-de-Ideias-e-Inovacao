@@ -10,7 +10,17 @@ public class PropostaResponseDTO {
     private String categoria;
     private String status;
     private Long autorId;
+    private String autorNome;
     private LocalDateTime dataCriacao;
+
+
+    public String getAutorNome() {
+        return autorNome;
+    }
+
+    public void setAutorNome(String autorNome) {
+        this.autorNome = autorNome;
+    }
 
     public Long getId() {
         return id;

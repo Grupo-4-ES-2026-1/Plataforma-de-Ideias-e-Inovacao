@@ -12,6 +12,7 @@ export interface PropostaResponse extends PropostaRequest {
   id: number;
   status: string;
   autorId?: number;
+  autorNome?: string;
   dataCriacao?: string;
 }
 
