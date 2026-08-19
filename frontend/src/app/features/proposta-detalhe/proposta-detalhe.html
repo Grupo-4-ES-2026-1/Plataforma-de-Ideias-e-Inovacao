@@ -12,6 +12,7 @@
 
     <div class="proposta-card">
       <h3>{{ p.titulo }}</h3>
+      <p class="proposta-autor"><strong>Autor:</strong> {{ p.autorNome || 'Autor não informado' }}</p>
       <p class="proposta-categoria"><strong>Categoria:</strong> {{ p.categoria }}</p>
       <p class="proposta-status"><strong>Status:</strong> {{ p.status }}</p>
       <hr>
