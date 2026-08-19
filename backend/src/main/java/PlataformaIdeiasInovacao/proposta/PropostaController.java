@@ -1,13 +1,24 @@
 package PlataformaIdeiasInovacao.proposta;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import PlataformaIdeiasInovacao.proposta.dto.PropostaRequestDTO;
 import PlataformaIdeiasInovacao.proposta.dto.PropostaResponseDTO;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/propostas")
@@ -17,8 +28,11 @@ public class PropostaController {
     private PropostaService propostaService;
 
     @PostMapping
-    public ResponseEntity<PropostaResponseDTO> cadastrar(@RequestBody @Valid PropostaRequestDTO data) {
+    public ResponseEntity<PropostaResponseDTO> cadastrar(
+            @RequestBody @Valid PropostaRequestDTO data) {
+
         PropostaResponseDTO response = propostaService.cadastrar(data);
+
         return ResponseEntity.ok(response);
     }
 
@@ -27,8 +41,34 @@ public class PropostaController {
         return ResponseEntity.ok(propostaService.listarTodos());
     }
 
+    @GetMapping("/minhas")
+    public ResponseEntity<Page<PropostaResponseDTO>> buscarMinhasPropostas(
+            @RequestParam(required = false) String status,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime dataInicial,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime dataFinal,
+
+            Pageable pageable) {
+
+        return ResponseEntity.ok(
+                propostaService.buscarMinhasPropostas(
+                        status,
+                        dataInicial,
+                        dataFinal,
+                        pageable
+                )
+        );
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<PropostaResponseDTO> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<PropostaResponseDTO> buscarPorId(
+            @PathVariable Long id) {
+
         return propostaService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
