@@ -1,5 +1,33 @@
 package PlataformaIdeiasInovacao.voto;
 
+import PlataformaIdeiasInovacao.proposta.Proposta;
+import PlataformaIdeiasInovacao.proposta.PropostaRepository;
+import PlataformaIdeiasInovacao.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class VotoService {
 
+    @Autowired
+    private VotoRepository votoRepository;
+
+    @Autowired
+    private PropostaRepository propostaRepository;
+
+    public Voto votar(Long propostaId, User usuario) {
+
+        Proposta proposta = propostaRepository.findById(propostaId)
+                .orElseThrow(() -> new RuntimeException("Proposta não encontrada."));
+
+        if (votoRepository.existsByUsuarioAndProposta(usuario, proposta)) {
+            throw new RuntimeException("Usuário já votou nesta proposta.");
+        }
+
+        Voto voto = new Voto();
+        voto.setUsuario(usuario);
+        voto.setProposta(proposta);
+
+        return votoRepository.save(voto);
+    }
 }
