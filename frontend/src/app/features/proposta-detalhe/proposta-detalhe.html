@@ -23,4 +23,41 @@
   <button class="btn-voltar" routerLink="/propostas">
     Voltar para a Lista
   </button>
+  <hr style="margin: 30px 0;">
+
+  <!-- ÁREA DE COMENTÁRIOS -->
+  <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+    <h3>Discussão</h3>
+
+    <!-- Formulário para adicionar comentário -->
+    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+      <input 
+        #campoComentario 
+        type="text" 
+        placeholder="Escreva seu comentário para refinar esta ideia..." 
+        style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"
+      >
+      <!-- Ao clicar, chama a função e limpa o campo -->
+      <button 
+        (click)="adicionarComentario(campoComentario.value); campoComentario.value = ''"
+        style="padding: 10px 20px; cursor: pointer;"
+      >
+        Enviar
+      </button>
+    </div>
+
+    <!-- Lista de comentários renderizada em ordem -->
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+      @for (comentario of comentarios(); track comentario.id) {
+        <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #007bff; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+          <div style="font-size: 0.9em; color: #555; margin-bottom: 5px;">
+            <strong>{{ comentario.autor }}</strong> comentou em {{ comentario.data | date:'dd/MM/yyyy HH:mm' }}:
+          </div>
+          <p style="margin: 0;">{{ comentario.texto }}</p>
+        </div>
+      } @empty {
+        <p style="color: #666; font-style: italic;">Nenhum comentário ainda. Seja o primeiro a contribuir!</p>
+      }
+    </div>
+  </div>
 </section>
