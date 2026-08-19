@@ -34,7 +34,9 @@ public class AuthService {
         }
 
         String encryptedPassword = passwordEncoder.encode(data.password());
+
         User newUser = new User(data.nome(), data.email(), encryptedPassword);
+
         this.userRepository.save(newUser);
     }
 

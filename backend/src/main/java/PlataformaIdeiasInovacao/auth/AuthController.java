@@ -17,7 +17,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Valid RegisterDTO data) {
+
+        System.out.println(">>> AUTH REGISTER FOI CHAMADO!");
+        
         this.authService.register(data);
+
         return ResponseEntity.ok().build();
     }
 

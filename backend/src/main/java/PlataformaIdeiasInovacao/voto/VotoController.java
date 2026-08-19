@@ -26,4 +26,9 @@ public class VotoController {
 
             return ResponseEntity.status(201).body(voto);
     }
+
+    @GetMapping("/{propostaId}/votos/count")
+    public ResponseEntity<Long> contarVotos(@PathVariable Long propostaId) {
+        return ResponseEntity.ok(votoService.contarVotos(propostaId));
+    }
 }

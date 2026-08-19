@@ -40,4 +40,10 @@ public class VotoService {
 
         return response;
     }
+    public long contarVotos(Long propostaId) {
+        Proposta proposta = propostaRepository.findById(propostaId)
+                .orElseThrow(() -> new RuntimeException("Proposta não encontrada."));
+
+        return votoRepository.countByProposta(proposta);
+    }
 }
