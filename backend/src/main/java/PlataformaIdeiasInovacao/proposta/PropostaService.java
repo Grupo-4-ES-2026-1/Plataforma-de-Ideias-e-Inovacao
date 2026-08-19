@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -36,12 +38,15 @@ public class PropostaService {
         String email = authentication.getName();
 
         User autor = userRepository.findByEmail(email);
+
         if (autor == null) {
             throw new RuntimeException("Usuário autenticado não encontrado.");
         }
+
         proposta.setAutor(autor);
 
         Proposta salva = propostaRepository.save(proposta);
+
         return paraDTO(salva);
     }
 
@@ -52,7 +57,34 @@ public class PropostaService {
     }
 
     public Optional<PropostaResponseDTO> buscarPorId(Long id) {
-        return propostaRepository.findById(id).map(this::paraDTO);
+        return propostaRepository.findById(id)
+                .map(this::paraDTO);
+    }
+
+    public Page<PropostaResponseDTO> buscarMinhasPropostas(
+            String status,
+            LocalDateTime dataInicial,
+            LocalDateTime dataFinal,
+            Pageable pageable) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User autor = userRepository.findByEmail(email);
+
+        if (autor == null) {
+            throw new RuntimeException("Usuário autenticado não encontrado.");
+        }
+
+        Page<Proposta> propostas = propostaRepository.buscarMinhasPropostas(
+                autor.getId(),
+                status,
+                dataInicial,
+                dataFinal,
+                pageable
+        );
+
+        return propostas.map(this::paraDTO);
     }
 
     private PropostaResponseDTO paraDTO(Proposta proposta) {
