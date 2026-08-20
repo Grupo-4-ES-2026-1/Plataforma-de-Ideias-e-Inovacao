@@ -34,7 +34,7 @@ describe('AuthService', () => {
       expect(service.roleAtual()).toBe('USER');
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/auth/login');
+    const req = httpMock.expectOne('https://plataforma-de-ideias-e-inovacao.onrender.com/auth/login');
     expect(req.request.method).toBe('POST');
     req.flush({ token });
   });
@@ -45,7 +45,7 @@ describe('AuthService', () => {
       expect(service.autenticado()).toBe(false);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/auth/login');
+    const req = httpMock.expectOne('https://plataforma-de-ideias-e-inovacao.onrender.com/auth/login');
     req.flush({ message: 'credenciais invalidas' }, { status: 401, statusText: 'Unauthorized' });
   });
 
@@ -54,7 +54,7 @@ describe('AuthService', () => {
 
     service.logout().subscribe();
 
-    const req = httpMock.expectOne('http://localhost:8080/auth/logout');
+    const req = httpMock.expectOne('https://plataforma-de-ideias-e-inovacao.onrender.com/auth/logout');
     req.flush({});
 
     expect(service.autenticado()).toBe(false);

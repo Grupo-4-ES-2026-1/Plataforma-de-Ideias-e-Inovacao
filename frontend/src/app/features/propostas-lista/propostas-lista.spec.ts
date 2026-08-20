@@ -26,7 +26,7 @@ describe('PropostasListaComponent', () => {
 
   it('should create', () => {
     fixture.detectChanges();
-    const req = httpMock.expectOne('http://localhost:8080/propostas');
+    const req = httpMock.expectOne('https://plataforma-de-ideias-e-inovacao.onrender.com/propostas');
     req.flush([]);
     expect(component).toBeTruthy();
   });
@@ -34,7 +34,7 @@ describe('PropostasListaComponent', () => {
   it('should load propostas from backend on init', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne('http://localhost:8080/propostas');
+    const req = httpMock.expectOne('https://plataforma-de-ideias-e-inovacao.onrender.com/propostas');
     expect(req.request.method).toBe('GET');
 
     req.flush([
@@ -48,7 +48,7 @@ describe('PropostasListaComponent', () => {
   it('should set erro when backend request fails', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne('http://localhost:8080/propostas');
+    const req = httpMock.expectOne('https://plataforma-de-ideias-e-inovacao.onrender.com/propostas');
     req.error(new ProgressEvent('erro de rede'));
 
     expect(component.erro()).toBeTruthy();
