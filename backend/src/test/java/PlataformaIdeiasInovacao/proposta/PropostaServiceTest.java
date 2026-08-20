@@ -121,12 +121,16 @@ class PropostaServiceTest {
     }
 
     private Proposta criarProposta(Long id, String titulo) {
+        User autor = new User("Autor de Teste", "autor@teste.com", "senha123");
+        autor.setId(1L);
+
         Proposta proposta = new Proposta();
         proposta.setId(id);
         proposta.setTitulo(titulo);
         proposta.setDescricao("Descrição qualquer");
         proposta.setCategoria("TECNOLOGIA");
         proposta.setStatus("SUBMETIDA");
+        proposta.setAutor(autor);
         return proposta;
     }
 }
