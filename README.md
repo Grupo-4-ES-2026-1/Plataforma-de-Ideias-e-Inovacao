@@ -130,6 +130,13 @@ spring.datasource.password=123456
 
 ---
 
+## 🌐 Aplicação em produção (Render)
+
+- **Frontend:** https://plataforma-de-ideias-e-inovacao-1.onrender.com
+- **Backend (API REST):** https://plataforma-de-ideias-e-inovacao.onrender.com
+
+> ⚠️ Ambos usam o plano gratuito do Render, que "dorme" após um período de inatividade. A primeira requisição após um tempo parado pode levar até ~50s para responder.
+
 ## 🚧 Status do Projeto
 
-Em desenvolvimento — Terceira Iteração
+Em desenvolvimento — Quarta Iteração
