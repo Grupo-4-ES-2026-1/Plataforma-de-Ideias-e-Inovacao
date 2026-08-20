@@ -13,7 +13,7 @@ export interface RegisterRequest {
 })
 export class Auth {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/auth/register';
+  private readonly apiUrl = 'https://plataforma-de-ideias-e-inovacao.onrender.com/auth/register';
 
   cadastrar(dados: RegisterRequest): Observable<unknown> {
     const payload = {

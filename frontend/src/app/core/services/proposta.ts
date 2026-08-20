@@ -31,7 +31,7 @@ export interface PropostaPage {
 })
 export class PropostaService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/propostas';
+  private readonly apiUrl = 'https://plataforma-de-ideias-e-inovacao.onrender.com/propostas';
 
   cadastrar(dados: PropostaRequest): Observable<PropostaResponse> {
     return this.http.post<PropostaResponse>(this.apiUrl, dados);
