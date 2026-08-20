@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import PlataformaIdeiasInovacao.voto.VotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,9 @@ public class PropostaService {
 
     @Autowired
     private PropostaRepository propostaRepository;
+
+    @Autowired
+    private VotoService votoService;
 
     @Autowired
     private UserRepository userRepository;
@@ -96,6 +100,7 @@ public class PropostaService {
         dto.setCategoria(proposta.getCategoria());
         dto.setStatus(proposta.getStatus());
         dto.setDataCriacao(proposta.getDataCriacao());
+        dto.setNumeroDeVotos(votoService.contarVotos(proposta.getId()));
         if (proposta.getAutor() != null) {
             dto.setAutorNome(proposta.getAutor().getNome());
             dto.setAutorId(proposta.getAutor().getId());
