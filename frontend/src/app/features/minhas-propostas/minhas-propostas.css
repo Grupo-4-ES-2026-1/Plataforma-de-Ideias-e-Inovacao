@@ -1,0 +1,132 @@
+.minhas-propostas {
+  max-width: 720px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.minhas-propostas h2 {
+  text-align: center;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.filtros div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filtros label {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.filtros select,
+.filtros input {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #1f2937;
+}
+
+.filtros button {
+  padding: 0.55rem 1.1rem;
+  background-color: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  height: fit-content;
+}
+
+.filtros button:hover {
+  background-color: #4f46e5;
+}
+
+.minhas-propostas > p {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.proposta-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+}
+
+.proposta-card h3 {
+  margin: 0 0 0.5rem;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.proposta-card p {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin: 0.25rem 0;
+  line-height: 1.4;
+}
+
+.proposta-card strong {
+  color: #1f2937;
+}
+
+.paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.paginacao span {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.paginacao button {
+  padding: 0.5rem 1rem;
+  background-color: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.paginacao button:hover:not(:disabled) {
+  background-color: #4f46e5;
+}
+
+.paginacao button:disabled {
+  background-color: #c7c7f5;
+  cursor: not-allowed;
+}

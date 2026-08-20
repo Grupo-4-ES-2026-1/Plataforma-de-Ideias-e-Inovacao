@@ -34,24 +34,13 @@ export class MinhasPropostasComponent {
     this.carregando.set(true);
     this.erro.set('');
 
-    const params: any = {
-      page: this.pagina(),
-      size: this.tamanhoPagina
-    };
-
-    if (this.status) {
-      params.status = this.status;
-    }
-
-    if (this.dataInicial) {
-      params.dataInicial = `${this.dataInicial}T00:00:00`;
-    }
-
-    if (this.dataFinal) {
-      params.dataFinal = `${this.dataFinal}T23:59:59`;
-    }
-
-    this.propostaService.buscarMinhasPropostas(params).subscribe({
+    this.propostaService.buscarMinhasPropostas(
+      this.status || undefined,
+      this.dataInicial || undefined,
+      this.dataFinal || undefined,
+      this.pagina(),
+      this.tamanhoPagina
+    ).subscribe({
       next: (resultado) => {
         this.propostas.set(resultado.content);
         this.totalPaginas.set(resultado.totalPages);
