@@ -21,6 +21,7 @@ import PlataformaIdeiasInovacao.proposta.dto.PropostaRequestDTO;
 import PlataformaIdeiasInovacao.proposta.dto.PropostaResponseDTO;
 import PlataformaIdeiasInovacao.user.User;
 import PlataformaIdeiasInovacao.user.UserRepository;
+import PlataformaIdeiasInovacao.voto.VotoService;
 
 @ExtendWith(MockitoExtension.class)
 class PropostaServiceTest {
@@ -30,6 +31,9 @@ class PropostaServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private VotoService votoService;
 
     @InjectMocks
     private PropostaService propostaService;
