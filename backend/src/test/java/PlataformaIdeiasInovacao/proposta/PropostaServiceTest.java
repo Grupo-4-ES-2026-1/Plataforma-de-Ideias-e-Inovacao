@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import PlataformaIdeiasInovacao.voto.VotoService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,8 +33,12 @@ class PropostaServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private VotoService votoService;
+
     @InjectMocks
     private PropostaService propostaService;
+
 
     private static final String EMAIL_AUTOR = "autor@exemplo.com";
 
@@ -60,6 +66,7 @@ class PropostaServiceTest {
             proposta.setId(10L);
             return proposta;
         });
+        when(votoService.contarVotos(any(Long.class))).thenReturn(0L);
 
         PropostaResponseDTO response = propostaService.cadastrar(requestDTO);
 
@@ -84,6 +91,8 @@ class PropostaServiceTest {
         Proposta proposta1 = criarProposta(1L, "Proposta 1");
         Proposta proposta2 = criarProposta(2L, "Proposta 2");
         when(propostaRepository.findAll()).thenReturn(List.of(proposta1, proposta2));
+        when(votoService.contarVotos(any(Long.class))).thenReturn(0L);
+
 
         List<PropostaResponseDTO> resultado = propostaService.listarTodos();
 
