@@ -16,8 +16,8 @@ interface AuthResponse {
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'jwt_token';
-  private readonly loginEndpoint = 'http://localhost:8080/auth/login';
-  private readonly logoutEndpoint = 'http://localhost:8080/auth/logout';
+  private readonly loginEndpoint = 'https://plataforma-de-ideias-e-inovacao.onrender.com/auth/login';
+  private readonly logoutEndpoint = 'https://plataforma-de-ideias-e-inovacao.onrender.com/auth/logout';
 
   usuarioLogado = signal<string | null>(null);
   roleAtual = signal<string | null>(null);
