@@ -55,6 +55,13 @@
   line-height: 1.5;
 }
 
+.proposta-votos {
+  font-size: 0.85rem;
+  color: #059669;
+  font-weight: 500;
+  margin: 0.25rem 0;
+}
+
 .btn-voltar {
   display: block;
   margin: 1.5rem auto 0;

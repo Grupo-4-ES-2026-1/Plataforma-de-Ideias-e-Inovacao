@@ -12,7 +12,15 @@ public class PropostaResponseDTO {
     private Long autorId;
     private String autorNome;
     private LocalDateTime dataCriacao;
+    private long numeroDeVotos;
 
+    public long getNumeroDeVotos() {
+        return numeroDeVotos;
+    }
+
+    public void setNumeroDeVotos(long numeroDeVotos) {
+        this.numeroDeVotos = numeroDeVotos;
+    }
 
     public String getAutorNome() {
         return autorNome;
