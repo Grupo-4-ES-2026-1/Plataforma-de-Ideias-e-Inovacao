@@ -14,6 +14,7 @@ export interface PropostaResponse extends PropostaRequest {
   autorId?: number;
   autorNome?: string;
   dataCriacao?: string;
+  numeroDeVotos: number;
 }
 
 export interface PropostaPage {
