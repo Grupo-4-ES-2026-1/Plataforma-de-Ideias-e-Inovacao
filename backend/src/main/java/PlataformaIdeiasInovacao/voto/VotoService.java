@@ -1,12 +1,12 @@
 package PlataformaIdeiasInovacao.voto;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import PlataformaIdeiasInovacao.proposta.Proposta;
 import PlataformaIdeiasInovacao.proposta.PropostaRepository;
 import PlataformaIdeiasInovacao.user.User;
 import PlataformaIdeiasInovacao.voto.dto.VotoResponseDTO;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class VotoService {
@@ -17,6 +17,14 @@ public class VotoService {
     @Autowired
     private PropostaRepository propostaRepository;
 
+    /**
+     * Registra um novo voto para a proposta.
+     * 
+     * REGRA DE NEGÓCIO: 
+     *a votação não altera o status da proposta automaticamente. 
+     *o endpoint de votação é estritamente independente do endpoint de status.
+     *nenhuma transição é disparada pela contagem de votos.
+     */
     public VotoResponseDTO votar(Long propostaId, User usuario) {
 
         Proposta proposta = propostaRepository.findById(propostaId)
