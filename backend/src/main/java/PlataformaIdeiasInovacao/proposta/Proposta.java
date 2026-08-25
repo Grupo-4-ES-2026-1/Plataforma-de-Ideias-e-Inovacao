@@ -18,7 +18,8 @@ public class Proposta {
 
     private String categoria;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+private StatusProposta status;
 
     @ManyToOne
     @JoinColumn(name = "autor_id")
@@ -58,13 +59,13 @@ public class Proposta {
         this.categoria = categoria;
     }
 
-    public String getStatus() {
-        return status;
-    }
+    public StatusProposta getStatus() {
+    return status;
+}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+public void setStatus(StatusProposta status) {
+    this.status = status;
+}
 
     public User getAutor() {
         return autor;

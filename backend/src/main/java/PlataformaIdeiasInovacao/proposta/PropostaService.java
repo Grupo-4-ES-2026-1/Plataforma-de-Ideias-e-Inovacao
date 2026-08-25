@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import PlataformaIdeiasInovacao.voto.VotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +15,7 @@ import PlataformaIdeiasInovacao.proposta.dto.PropostaRequestDTO;
 import PlataformaIdeiasInovacao.proposta.dto.PropostaResponseDTO;
 import PlataformaIdeiasInovacao.user.User;
 import PlataformaIdeiasInovacao.user.UserRepository;
+import PlataformaIdeiasInovacao.voto.VotoService;
 
 @Service
 public class PropostaService {
@@ -35,7 +35,7 @@ public class PropostaService {
         proposta.setTitulo(data.getTitulo());
         proposta.setDescricao(data.getDescricao());
         proposta.setCategoria(data.getCategoria());
-        proposta.setStatus("SUBMETIDA");
+        proposta.setStatus(StatusProposta.SUBMETIDA);
         proposta.setDataCriacao(LocalDateTime.now());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -66,7 +66,7 @@ public class PropostaService {
     }
 
     public Page<PropostaResponseDTO> buscarMinhasPropostas(
-            String status,
+            StatusProposta status,
             LocalDateTime dataInicial,
             LocalDateTime dataFinal,
             Pageable pageable) {
@@ -91,6 +91,23 @@ public class PropostaService {
         return propostas.map(this::paraDTO);
     }
 
+    public PropostaResponseDTO atualizarStatus(Long id, StatusProposta novoStatus) {
+
+        Proposta proposta = propostaRepository.findById(id)
+                .orElseThrow(() ->
+                        new PropostaNaoEncontradaException("Proposta não encontrada."));
+
+        if (!proposta.getStatus().podeTransicionarPara(novoStatus)) {
+            throw new IllegalArgumentException("Transição de status inválida.");
+        }
+
+        proposta.setStatus(novoStatus);
+
+        Proposta atualizada = propostaRepository.save(proposta);
+
+        return paraDTO(atualizada);
+    }
+
     private PropostaResponseDTO paraDTO(Proposta proposta) {
         PropostaResponseDTO dto = new PropostaResponseDTO();
 
@@ -98,9 +115,10 @@ public class PropostaService {
         dto.setTitulo(proposta.getTitulo());
         dto.setDescricao(proposta.getDescricao());
         dto.setCategoria(proposta.getCategoria());
-        dto.setStatus(proposta.getStatus());
+        dto.setStatus(proposta.getStatus().name());
         dto.setDataCriacao(proposta.getDataCriacao());
         dto.setNumeroDeVotos(votoService.contarVotos(proposta.getId()));
+
         if (proposta.getAutor() != null) {
             dto.setAutorNome(proposta.getAutor().getNome());
             dto.setAutorId(proposta.getAutor().getId());
