@@ -139,7 +139,7 @@ class PropostaServiceTest {
         proposta.setTitulo(titulo);
         proposta.setDescricao("Descrição qualquer");
         proposta.setCategoria("TECNOLOGIA");
-        proposta.setStatus("SUBMETIDA");
+       proposta.setStatus(StatusProposta.SUBMETIDA);
         proposta.setAutor(autor);
         return proposta;
     }

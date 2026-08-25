@@ -23,7 +23,7 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     """)
     Page<Proposta> buscarMinhasPropostas(
             @Param("autorId") Long autorId,
-            @Param("status") String status,
+            @Param("status") StatusProposta status,
             @Param("dataInicial") LocalDateTime dataInicial,
             @Param("dataFinal") LocalDateTime dataFinal,
             Pageable pageable
