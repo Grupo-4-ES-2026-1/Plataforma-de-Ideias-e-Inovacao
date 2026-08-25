@@ -14,12 +14,64 @@
       <h3>{{ p.titulo }}</h3>
       <p class="proposta-autor"><strong>Autor:</strong> {{ p.autorNome || 'Autor não informado' }}</p>
       <p class="proposta-categoria"><strong>Categoria:</strong> {{ p.categoria }}</p>
-      <p class="proposta-status"><strong>Status:</strong> {{ p.status }}</p>
+      <p class="proposta-status"><strong>Status:</strong> {{ getLabelStatus(p.status) }}</p>
       <p class="proposta-votos"><strong>Votos:</strong> {{ p.numeroDeVotos }}</p>
 
       <hr>
       <p><strong>Descrição Completa:</strong></p>
       <p class="proposta-descricao">{{ p.descricao }}</p>
+    </div>
+
+    <!-- US10 #101 - ação de alterar status (somente para quem avalia propostas) -->
+    @if (podeAlterarStatus()) {
+      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 15px;">
+        <p style="margin: 0 0 10px 0;"><strong>Alterar status da proposta</strong></p>
+
+        @if (proximosStatus().length > 0) {
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            @for (statusOpcao of proximosStatus(); track statusOpcao) {
+              <button
+                type="button"
+                [disabled]="alterandoStatus()"
+                (click)="alterarStatus(statusOpcao)"
+                style="padding: 8px 16px; cursor: pointer;"
+              >
+                Marcar como "{{ getLabelStatus(statusOpcao) }}"
+              </button>
+            }
+          </div>
+        } @else {
+          <p style="color: #666; font-style: italic; margin: 0;">
+            Esta proposta está em um status final e não possui mais transições disponíveis.
+          </p>
+        }
+
+        @if (erroStatus()) {
+          <p class="status-mensagem erro" style="margin-top: 10px;">{{ erroStatus() }}</p>
+        }
+      </div>
+    }
+
+    <!-- US11 #104 - histórico de status -->
+    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 15px;">
+      <p style="margin: 0 0 10px 0;"><strong>Histórico de status</strong></p>
+
+      @if (carregandoHistorico()) {
+        <p class="status-mensagem">Carregando histórico...</p>
+      } @else if (historico().length > 0) {
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+          @for (item of historico(); track item.dataAlteracao + item.status) {
+            <li style="background: white; padding: 10px; border-radius: 6px; border-left: 4px solid #007bff;">
+              <strong>{{ getLabelStatus(item.status) }}</strong>
+              <span style="color: #555;"> — {{ item.dataAlteracao | date:'dd/MM/yyyy HH:mm' }}</span>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p style="color: #666; font-style: italic; margin: 0;">
+          Ainda não há histórico de status para esta proposta.
+        </p>
+      }
     </div>
   }
 

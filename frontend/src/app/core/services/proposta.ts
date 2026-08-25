@@ -27,6 +27,12 @@ export interface PropostaPage {
   last: boolean;
 }
 
+/**  - item do histórico de status de uma proposta. */
+export interface HistoricoStatusItem {
+  status: string;
+  dataAlteracao: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -74,5 +80,21 @@ export class PropostaService {
       `${this.apiUrl}/minhas`,
       { params }
     );
+  }
+
+  /**
+   * Endpoint ainda não implementado no backend. Assim que
+   * estiver disponível, esta chamada passa a funcionar sem mudanças aqui.
+   */
+  atualizarStatus(id: number, novoStatus: string): Observable<PropostaResponse> {
+    return this.http.patch<PropostaResponse>(`${this.apiUrl}/${id}/status`, { novoStatus });
+  }
+
+  /**
+   * Endpoint ainda não implementado no backend). Assim que
+   * estiver disponível, esta chamada passa a funcionar sem mudanças aqui.
+   */
+  buscarHistoricoStatus(id: number): Observable<HistoricoStatusItem[]> {
+    return this.http.get<HistoricoStatusItem[]>(`${this.apiUrl}/${id}/historico-status`);
   }
 }
