@@ -6,6 +6,12 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
+
+import PlataformaIdeiasInovacao.proposta.historico.HistoricoStatusProposta;
+import PlataformaIdeiasInovacao.proposta.historico.HistoricoStatusPropostaRepository;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +37,9 @@ class PropostaServiceTest {
 
     @Mock
     private PropostaRepository propostaRepository;
+
+    @Mock
+    private HistoricoStatusPropostaRepository historicoStatusRepository;
 
     @Mock
     private UserRepository userRepository;
@@ -150,6 +159,9 @@ class PropostaServiceTest {
 
         assertThat(response.getStatus()).isEqualTo("EM_ANALISE");
         assertThat(proposta.getStatus()).isEqualTo(StatusProposta.EM_ANALISE);
+
+        verify(historicoStatusRepository)
+                .save(any(HistoricoStatusProposta.class));
     }
 
     @Test
@@ -169,6 +181,9 @@ class PropostaServiceTest {
         )
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Transição de status inválida.");
+
+        verify(historicoStatusRepository, never())
+                .save(any(HistoricoStatusProposta.class));
     }
 
     @Test
