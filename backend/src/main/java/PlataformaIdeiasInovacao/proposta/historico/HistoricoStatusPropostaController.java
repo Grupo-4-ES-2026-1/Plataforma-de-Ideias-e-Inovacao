@@ -2,7 +2,6 @@ package PlataformaIdeiasInovacao.proposta.historico;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +11,11 @@ import PlataformaIdeiasInovacao.proposta.historico.dto.HistoricoStatusPropostaRe
 @RequestMapping("/propostas")
 public class HistoricoStatusPropostaController {
 
-    @Autowired
-    private HistoricoStatusPropostaService historicoService;
+    private final HistoricoStatusPropostaService historicoService;
+
+    public HistoricoStatusPropostaController(HistoricoStatusPropostaService historicoService) {
+        this.historicoService = historicoService;
+    }
 
     @GetMapping("/{id}/historico-status")
     public ResponseEntity<List<HistoricoStatusPropostaResponseDTO>> buscarHistorico(

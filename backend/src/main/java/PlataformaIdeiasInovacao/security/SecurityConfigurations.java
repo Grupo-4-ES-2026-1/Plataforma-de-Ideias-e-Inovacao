@@ -3,7 +3,6 @@ package PlataformaIdeiasInovacao.security;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,17 +24,25 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfigurations {
 
-    @Autowired
-    private SecurityFilter securityFilter;
+    private static final String ROLE_ADMIN = "ADMIN";
 
-    @Value("${app.cors.allowed-origins:http://localhost:4200}")
-    private String allowedOrigins;
+    private final SecurityFilter securityFilter;
+
+    public SecurityConfigurations(SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
+    }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity httpSecurity,
+            CorsConfigurationSource corsConfigurationSource) throws Exception {
         return httpSecurity
+                // CSRF é uma proteção voltada a autenticação baseada em cookies/sessão.
+                // Esta API é stateless (ver SessionCreationPolicy.STATELESS abaixo) e usa
+                // autenticação via JWT no header Authorization, não em cookies de sessão,
+                // então não há vetor de ataque CSRF aplicável aqui. Seguro desabilitar.
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
@@ -44,9 +51,9 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers("/error").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/propostas/*/status").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/users").hasRole(ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole(ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.PATCH, "/propostas/*/status").hasRole(ROLE_ADMIN)
 
                         .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
 
@@ -57,7 +64,9 @@ public class SecurityConfigurations {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource(
+            @Value("${app.cors.allowed-origins:http://localhost:4200}") String allowedOrigins) {
+
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));

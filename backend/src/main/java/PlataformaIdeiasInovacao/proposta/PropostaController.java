@@ -3,7 +3,6 @@ package PlataformaIdeiasInovacao.proposta;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,8 +25,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/propostas")
 public class PropostaController {
 
-    @Autowired
-    private PropostaService propostaService;
+    private final PropostaService propostaService;
+
+    public PropostaController(PropostaService propostaService) {
+        this.propostaService = propostaService;
+    }
 
     @PostMapping
     public ResponseEntity<PropostaResponseDTO> cadastrar(

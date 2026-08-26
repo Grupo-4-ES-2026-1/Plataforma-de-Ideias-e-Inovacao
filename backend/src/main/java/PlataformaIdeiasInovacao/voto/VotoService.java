@@ -1,6 +1,5 @@
 package PlataformaIdeiasInovacao.voto;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import PlataformaIdeiasInovacao.proposta.Proposta;
@@ -12,11 +11,13 @@ import PlataformaIdeiasInovacao.voto.dto.VotoResponseDTO;
 @Service
 public class VotoService {
 
-    @Autowired
-    private VotoRepository votoRepository;
+    private final VotoRepository votoRepository;
+    private final PropostaRepository propostaRepository;
 
-    @Autowired
-    private PropostaRepository propostaRepository;
+    public VotoService(VotoRepository votoRepository, PropostaRepository propostaRepository) {
+        this.votoRepository = votoRepository;
+        this.propostaRepository = propostaRepository;
+    }
 
     public VotoResponseDTO votar(Long propostaId, User usuario) {
 
