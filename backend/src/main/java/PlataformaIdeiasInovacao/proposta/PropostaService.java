@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.transaction.annotation.Transactional;
+
+import PlataformaIdeiasInovacao.proposta.historico.HistoricoStatusProposta;
+import PlataformaIdeiasInovacao.proposta.historico.HistoricoStatusPropostaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +21,15 @@ import PlataformaIdeiasInovacao.user.User;
 import PlataformaIdeiasInovacao.user.UserRepository;
 import PlataformaIdeiasInovacao.voto.VotoService;
 
+
 @Service
 public class PropostaService {
 
     @Autowired
     private PropostaRepository propostaRepository;
+
+    @Autowired
+    private HistoricoStatusPropostaRepository historicoStatusRepository;
 
     @Autowired
     private VotoService votoService;
@@ -91,19 +99,31 @@ public class PropostaService {
         return propostas.map(this::paraDTO);
     }
 
+    @Transactional
     public PropostaResponseDTO atualizarStatus(Long id, StatusProposta novoStatus) {
 
         Proposta proposta = propostaRepository.findById(id)
                 .orElseThrow(() ->
                         new PropostaNaoEncontradaException("Proposta não encontrada."));
 
-        if (!proposta.getStatus().podeTransicionarPara(novoStatus)) {
+        StatusProposta statusAnterior = proposta.getStatus();
+
+        if (!statusAnterior.podeTransicionarPara(novoStatus)) {
             throw new IllegalArgumentException("Transição de status inválida.");
         }
 
         proposta.setStatus(novoStatus);
 
         Proposta atualizada = propostaRepository.save(proposta);
+
+        HistoricoStatusProposta historico =
+                new HistoricoStatusProposta(
+                        atualizada,
+                        statusAnterior,
+                        novoStatus
+                );
+
+        historicoStatusRepository.save(historico);
 
         return paraDTO(atualizada);
     }
