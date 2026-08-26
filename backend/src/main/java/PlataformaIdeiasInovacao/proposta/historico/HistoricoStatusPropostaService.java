@@ -2,7 +2,6 @@ package PlataformaIdeiasInovacao.proposta.historico;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import PlataformaIdeiasInovacao.proposta.PropostaNaoEncontradaException;
@@ -12,11 +11,15 @@ import PlataformaIdeiasInovacao.proposta.historico.dto.HistoricoStatusPropostaRe
 @Service
 public class HistoricoStatusPropostaService {
 
-    @Autowired
-    private HistoricoStatusPropostaRepository historicoRepository;
+    private final HistoricoStatusPropostaRepository historicoRepository;
+    private final PropostaRepository propostaRepository;
 
-    @Autowired
-    private PropostaRepository propostaRepository;
+    public HistoricoStatusPropostaService(
+            HistoricoStatusPropostaRepository historicoRepository,
+            PropostaRepository propostaRepository) {
+        this.historicoRepository = historicoRepository;
+        this.propostaRepository = propostaRepository;
+    }
 
     public List<HistoricoStatusPropostaResponseDTO> buscarPorProposta(Long propostaId) {
 

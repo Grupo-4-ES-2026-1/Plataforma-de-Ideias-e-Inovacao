@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import PlataformaIdeiasInovacao.proposta.historico.HistoricoStatusProposta;
 import PlataformaIdeiasInovacao.proposta.historico.HistoricoStatusPropostaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,17 +25,21 @@ import PlataformaIdeiasInovacao.voto.VotoService;
 @Service
 public class PropostaService {
 
-    @Autowired
-    private PropostaRepository propostaRepository;
+    private final PropostaRepository propostaRepository;
+    private final HistoricoStatusPropostaRepository historicoStatusRepository;
+    private final VotoService votoService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private HistoricoStatusPropostaRepository historicoStatusRepository;
-
-    @Autowired
-    private VotoService votoService;
-
-    @Autowired
-    private UserRepository userRepository;
+    public PropostaService(
+            PropostaRepository propostaRepository,
+            HistoricoStatusPropostaRepository historicoStatusRepository,
+            VotoService votoService,
+            UserRepository userRepository) {
+        this.propostaRepository = propostaRepository;
+        this.historicoStatusRepository = historicoStatusRepository;
+        this.votoService = votoService;
+        this.userRepository = userRepository;
+    }
 
     public PropostaResponseDTO cadastrar(PropostaRequestDTO data) {
         Proposta proposta = new Proposta();

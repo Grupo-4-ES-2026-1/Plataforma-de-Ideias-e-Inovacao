@@ -3,7 +3,6 @@ package PlataformaIdeiasInovacao.voto;
 import PlataformaIdeiasInovacao.user.User;
 import PlataformaIdeiasInovacao.voto.dto.VotoResponseDTO;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/propostas")
 public class VotoController {
 
-    @Autowired
-    private VotoService votoService;
+    private final VotoService votoService;
+
+    public VotoController(VotoService votoService) {
+        this.votoService = votoService;
+    }
 
     @PostMapping("/{propostaId}/voto")
     public ResponseEntity<VotoResponseDTO> votar(

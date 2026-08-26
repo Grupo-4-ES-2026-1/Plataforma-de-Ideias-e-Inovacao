@@ -1,32 +1,36 @@
 package PlataformaIdeiasInovacao.auth;
 
-import PlataformaIdeiasInovacao.auth.dto.AuthenticationDTO;
-import PlataformaIdeiasInovacao.auth.dto.LoginResponseDTO;
-import PlataformaIdeiasInovacao.auth.dto.RegisterDTO;
-import PlataformaIdeiasInovacao.security.TokenService;
-import PlataformaIdeiasInovacao.user.User;
-import PlataformaIdeiasInovacao.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import PlataformaIdeiasInovacao.auth.dto.AuthenticationDTO;
+import PlataformaIdeiasInovacao.auth.dto.LoginResponseDTO;
+import PlataformaIdeiasInovacao.auth.dto.RegisterDTO;
+import PlataformaIdeiasInovacao.security.TokenService;
+import PlataformaIdeiasInovacao.user.User;
+import PlataformaIdeiasInovacao.user.UserRepository;
+
 @Service
 public class AuthService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private TokenService tokenService;
+    public AuthService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager,
+            TokenService tokenService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+    }
 
     public void register(RegisterDTO data) {
         if (this.userRepository.findByEmail(data.email()) != null) {
