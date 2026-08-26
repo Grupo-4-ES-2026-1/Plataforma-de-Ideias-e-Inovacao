@@ -12,11 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -92,38 +95,149 @@ class PropostaServiceTest {
     }
 
     @Test
-    void deveListarTodasAsPropostas() {
+    void deveListarTodasAsPropostasComOrdenacaoPadrao() {
         Proposta proposta1 = criarProposta(1L, "Proposta 1");
         Proposta proposta2 = criarProposta(2L, "Proposta 2");
 
-        when(propostaRepository.findAll()).thenReturn(List.of(proposta1, proposta2));
+        Sort ordenacaoEsperada =
+                Sort.by(Sort.Direction.DESC, "dataCriacao");
+
+        when(propostaRepository.findAll(ordenacaoEsperada))
+                .thenReturn(List.of(proposta1, proposta2));
+
         when(votoService.contarVotos(any(Long.class))).thenReturn(0L);
 
-        List<PropostaResponseDTO> resultado = propostaService.listarTodos();
+        List<PropostaResponseDTO> resultado =
+                propostaService.listarTodos(null, null);
 
         assertThat(resultado).hasSize(2);
         assertThat(resultado.get(0).getTitulo()).isEqualTo("Proposta 1");
         assertThat(resultado.get(1).getTitulo()).isEqualTo("Proposta 2");
+
+        verify(propostaRepository).findAll(ordenacaoEsperada);
+    }
+
+    @Test
+    void deveFiltrarPropostasPorStatus() {
+        Proposta proposta = criarProposta(1L, "Proposta Aprovada");
+        proposta.setStatus(StatusProposta.APROVADA);
+
+        Sort ordenacaoEsperada =
+                Sort.by(Sort.Direction.DESC, "dataCriacao");
+
+        when(propostaRepository.findByStatus(
+                StatusProposta.APROVADA,
+                ordenacaoEsperada
+        )).thenReturn(List.of(proposta));
+
+        when(votoService.contarVotos(1L)).thenReturn(0L);
+
+        List<PropostaResponseDTO> resultado =
+                propostaService.listarTodos(
+                        StatusProposta.APROVADA,
+                        null
+                );
+
+        assertThat(resultado).hasSize(1);
+        assertThat(resultado.get(0).getStatus()).isEqualTo("APROVADA");
+
+        verify(propostaRepository).findByStatus(
+                StatusProposta.APROVADA,
+                ordenacaoEsperada
+        );
+    }
+
+    @Test
+    void deveOrdenarPorTituloAscendente() {
+        Proposta proposta = criarProposta(1L, "Proposta A");
+
+        Sort ordenacaoEsperada =
+                Sort.by(Sort.Direction.ASC, "titulo");
+
+        when(propostaRepository.findAll(ordenacaoEsperada))
+                .thenReturn(List.of(proposta));
+
+        when(votoService.contarVotos(1L)).thenReturn(0L);
+
+        List<PropostaResponseDTO> resultado =
+                propostaService.listarTodos(
+                        null,
+                        "titulo,asc"
+                );
+
+        assertThat(resultado).hasSize(1);
+
+        verify(propostaRepository)
+                .findAll(ordenacaoEsperada);
+    }
+
+    @Test
+    void deveOrdenarPorDataCriacaoDescendente() {
+        Proposta proposta = criarProposta(1L, "Proposta Teste");
+
+        Sort ordenacaoEsperada =
+                Sort.by(Sort.Direction.DESC, "dataCriacao");
+
+        when(propostaRepository.findAll(ordenacaoEsperada))
+                .thenReturn(List.of(proposta));
+
+        when(votoService.contarVotos(1L)).thenReturn(0L);
+
+        List<PropostaResponseDTO> resultado =
+                propostaService.listarTodos(
+                        null,
+                        "dataCriacao,desc"
+                );
+
+        assertThat(resultado).hasSize(1);
+
+        verify(propostaRepository)
+                .findAll(ordenacaoEsperada);
+    }
+
+    @Test
+    void deveUsarAscendenteQuandoDirecaoNaoForInformada() {
+        Proposta proposta = criarProposta(1L, "Proposta Teste");
+
+        Sort ordenacaoEsperada =
+                Sort.by(Sort.Direction.ASC, "titulo");
+
+        when(propostaRepository.findAll(ordenacaoEsperada))
+                .thenReturn(List.of(proposta));
+
+        when(votoService.contarVotos(1L)).thenReturn(0L);
+
+        propostaService.listarTodos(null, "titulo");
+
+        verify(propostaRepository)
+                .findAll(ordenacaoEsperada);
     }
 
     @Test
     void deveBuscarPropostaPorIdQuandoExiste() {
         Proposta proposta = criarProposta(5L, "Proposta Encontrada");
 
-        when(propostaRepository.findById(5L)).thenReturn(Optional.of(proposta));
-        when(votoService.contarVotos(5L)).thenReturn(0L);
+        when(propostaRepository.findById(5L))
+                .thenReturn(Optional.of(proposta));
 
-        Optional<PropostaResponseDTO> resultado = propostaService.buscarPorId(5L);
+        when(votoService.contarVotos(5L))
+                .thenReturn(0L);
+
+        Optional<PropostaResponseDTO> resultado =
+                propostaService.buscarPorId(5L);
 
         assertThat(resultado).isPresent();
-        assertThat(resultado.get().getTitulo()).isEqualTo("Proposta Encontrada");
+        assertThat(resultado.get().getTitulo())
+                .isEqualTo("Proposta Encontrada");
     }
 
     @Test
     void deveRetornarVazioQuandoPropostaNaoExiste() {
-        when(propostaRepository.findById(99L)).thenReturn(Optional.empty());
+        when(propostaRepository.findById(99L))
+                .thenReturn(Optional.empty());
 
-        Optional<PropostaResponseDTO> resultado = propostaService.buscarPorId(99L);
+        Optional<PropostaResponseDTO> resultado =
+                propostaService.buscarPorId(99L);
 
         assertThat(resultado).isEmpty();
     }
@@ -140,7 +254,8 @@ class PropostaServiceTest {
         when(propostaRepository.save(any(Proposta.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        when(votoService.contarVotos(1L)).thenReturn(0L);
+        when(votoService.contarVotos(1L))
+                .thenReturn(0L);
 
         PropostaResponseDTO response =
                 propostaService.atualizarStatus(
@@ -148,8 +263,11 @@ class PropostaServiceTest {
                         StatusProposta.EM_ANALISE
                 );
 
-        assertThat(response.getStatus()).isEqualTo("EM_ANALISE");
-        assertThat(proposta.getStatus()).isEqualTo(StatusProposta.EM_ANALISE);
+        assertThat(response.getStatus())
+                .isEqualTo("EM_ANALISE");
+
+        assertThat(proposta.getStatus())
+                .isEqualTo(StatusProposta.EM_ANALISE);
     }
 
     @Test
