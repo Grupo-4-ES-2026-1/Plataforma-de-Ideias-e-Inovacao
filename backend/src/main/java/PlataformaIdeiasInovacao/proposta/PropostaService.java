@@ -11,6 +11,7 @@ import PlataformaIdeiasInovacao.proposta.historico.HistoricoStatusPropostaReposi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -62,10 +63,44 @@ public class PropostaService {
         return paraDTO(salva);
     }
 
-    public List<PropostaResponseDTO> listarTodos() {
-        return propostaRepository.findAll().stream()
+    public List<PropostaResponseDTO> listarTodos(
+            StatusProposta status,
+            String sort) {
+
+        Sort ordenacao = criarOrdenacao(sort);
+
+        List<Proposta> propostas;
+
+        if (status == null) {
+            propostas = propostaRepository.findAll(ordenacao);
+        } else {
+            propostas = propostaRepository.findByStatus(status, ordenacao);
+        }
+
+        return propostas.stream()
                 .map(this::paraDTO)
                 .toList();
+    }
+
+    private Sort criarOrdenacao(String sort) {
+
+        if (sort == null || sort.isBlank()) {
+            return Sort.by(Sort.Direction.DESC, "dataCriacao");
+        }
+
+        String[] partes = sort.split(",");
+
+        String campo = partes[0];
+
+        Sort.Direction direcao = Sort.Direction.ASC;
+
+        if (partes.length > 1
+                && partes[1].equalsIgnoreCase("desc")) {
+
+            direcao = Sort.Direction.DESC;
+        }
+
+        return Sort.by(direcao, campo);
     }
 
     public Optional<PropostaResponseDTO> buscarPorId(Long id) {

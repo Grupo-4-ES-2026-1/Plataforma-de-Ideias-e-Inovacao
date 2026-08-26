@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +13,10 @@ import org.springframework.data.repository.query.Param;
 public interface PropostaRepository extends JpaRepository<Proposta, Long> {
 
     List<Proposta> findByAutorId(Long autorId);
+
+    // US12 / #105
+    // Permite filtrar as propostas por status e aplicar ordenação.
+    List<Proposta> findByStatus(StatusProposta status, Sort sort);
 
     @Query("""
         SELECT p FROM Proposta p

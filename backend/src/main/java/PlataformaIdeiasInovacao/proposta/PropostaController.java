@@ -38,10 +38,15 @@ public class PropostaController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<PropostaResponseDTO>> listarTodos() {
-        return ResponseEntity.ok(propostaService.listarTodos());
-    }
+   @GetMapping
+public ResponseEntity<List<PropostaResponseDTO>> listarTodos(
+        @RequestParam(required = false) StatusProposta status,
+        @RequestParam(required = false) String sort) {
+
+    return ResponseEntity.ok(
+            propostaService.listarTodos(status, sort)
+    );
+}
 
     @GetMapping("/minhas")
     public ResponseEntity<Page<PropostaResponseDTO>> buscarMinhasPropostas(
