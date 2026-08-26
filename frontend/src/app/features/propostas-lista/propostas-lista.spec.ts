@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { PropostasListaComponent } from './propostas-lista';
 
@@ -9,9 +10,13 @@ describe('PropostasListaComponent', () => {
   let fixture: ComponentFixture<PropostasListaComponent>;
   let httpMock: HttpTestingController;
 
+  //a URL base que queremos monitorar nos testes
+  const apiUrl = 'https://plataforma-de-ideias-e-inovacao.onrender.com/propostas';
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PropostasListaComponent, HttpClientTestingModule],
+      //adicionado o FormsModule nos imports do teste
+      imports: [PropostasListaComponent, HttpClientTestingModule, FormsModule],
       providers: [provideRouter([])],
     }).compileComponents();
 
@@ -26,7 +31,8 @@ describe('PropostasListaComponent', () => {
 
   it('should create', () => {
     fixture.detectChanges();
-    const req = httpMock.expectOne('https://plataforma-de-ideias-e-inovacao.onrender.com/propostas');
+    //usamos uma função para ignorar os parâmetros da URL (ex: ?sort=recentes)
+    const req = httpMock.expectOne(req => req.url === apiUrl);
     req.flush([]);
     expect(component).toBeTruthy();
   });
@@ -34,7 +40,7 @@ describe('PropostasListaComponent', () => {
   it('should load propostas from backend on init', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne('https://plataforma-de-ideias-e-inovacao.onrender.com/propostas');
+    const req = httpMock.expectOne(req => req.url === apiUrl);
     expect(req.request.method).toBe('GET');
 
     req.flush([
@@ -48,7 +54,7 @@ describe('PropostasListaComponent', () => {
   it('should set erro when backend request fails', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne('https://plataforma-de-ideias-e-inovacao.onrender.com/propostas');
+    const req = httpMock.expectOne(req => req.url === apiUrl);
     req.error(new ProgressEvent('erro de rede'));
 
     expect(component.erro()).toBeTruthy();

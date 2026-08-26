@@ -6,17 +6,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.data.domain.Sort;
@@ -25,6 +25,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import PlataformaIdeiasInovacao.proposta.dto.PropostaRequestDTO;
 import PlataformaIdeiasInovacao.proposta.dto.PropostaResponseDTO;
+import PlataformaIdeiasInovacao.proposta.historico.HistoricoStatusProposta;
+import PlataformaIdeiasInovacao.proposta.historico.HistoricoStatusPropostaRepository;
 import PlataformaIdeiasInovacao.user.User;
 import PlataformaIdeiasInovacao.user.UserRepository;
 import PlataformaIdeiasInovacao.voto.VotoService;
@@ -34,6 +36,9 @@ class PropostaServiceTest {
 
     @Mock
     private PropostaRepository propostaRepository;
+
+    @Mock
+    private HistoricoStatusPropostaRepository historicoStatusRepository;
 
     @Mock
     private UserRepository userRepository;
@@ -268,6 +273,9 @@ class PropostaServiceTest {
 
         assertThat(proposta.getStatus())
                 .isEqualTo(StatusProposta.EM_ANALISE);
+
+        verify(historicoStatusRepository)
+                .save(any(HistoricoStatusProposta.class));
     }
 
     @Test
@@ -287,6 +295,9 @@ class PropostaServiceTest {
         )
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Transição de status inválida.");
+
+        verify(historicoStatusRepository, never())
+                .save(any(HistoricoStatusProposta.class));
     }
 
     @Test

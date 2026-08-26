@@ -95,3 +95,36 @@
 .btn-nova-proposta:hover {
   background-color: #4f46e5;
 }
+
+/* NOVAS CLASSES PARA OS FILTROS */
+.filtros-container {
+  display: flex;
+  gap: 1.5rem;
+  background-color: #f8f9fa;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filtro-grupo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.filtro-grupo select {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 0.9rem;
+  color: #1f2937;
+  min-width: 150px;
+}
