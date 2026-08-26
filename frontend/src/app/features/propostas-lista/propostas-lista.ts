@@ -1,12 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { PropostaService, PropostaResponse } from '../../core/services/proposta';
 
 @Component({
   selector: 'app-propostas-lista',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './propostas-lista.html',
   styleUrl: './propostas-lista.css'
 })
@@ -17,8 +18,17 @@ export class PropostasListaComponent implements OnInit {
   carregando = signal(true);
   erro = signal('');
 
+  filtroStatus = '';
+  ordenacao = 'recentes';
+
   ngOnInit(): void {
-    this.propostaService.listar().subscribe({
+    this.carregarPropostas();
+  }
+
+  carregarPropostas(): void {
+    this.carregando.set(true);
+    
+    this.propostaService.listar(this.filtroStatus, this.ordenacao).subscribe({
       next: (dados) => {
         this.propostas.set(dados);
         this.carregando.set(false);
@@ -28,5 +38,9 @@ export class PropostasListaComponent implements OnInit {
         this.carregando.set(false);
       }
     });
+  }
+
+  aplicarFiltros(): void {
+    this.carregarPropostas();
   }
 }

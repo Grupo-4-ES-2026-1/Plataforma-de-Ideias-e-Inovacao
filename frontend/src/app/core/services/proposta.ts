@@ -44,8 +44,18 @@ export class PropostaService {
     return this.http.post<PropostaResponse>(this.apiUrl, dados);
   }
 
-  listar(): Observable<PropostaResponse[]> {
-    return this.http.get<PropostaResponse[]>(this.apiUrl);
+  listar(status: string = '', sort: string = 'recentes'): Observable<PropostaResponse[]> {
+    let params = new HttpParams();
+
+    if (status) {
+      params = params.set('status', status);
+    }
+
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    return this.http.get<PropostaResponse[]>(this.apiUrl, { params });
   }
 
   buscarPorId(id: number): Observable<PropostaResponse> {
