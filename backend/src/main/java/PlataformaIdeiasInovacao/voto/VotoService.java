@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import PlataformaIdeiasInovacao.proposta.Proposta;
 import PlataformaIdeiasInovacao.proposta.PropostaRepository;
+import PlataformaIdeiasInovacao.proposta.StatusProposta;
 import PlataformaIdeiasInovacao.user.User;
 import PlataformaIdeiasInovacao.voto.dto.VotoResponseDTO;
 
@@ -17,18 +18,16 @@ public class VotoService {
     @Autowired
     private PropostaRepository propostaRepository;
 
-    /**
-     * Registra um novo voto para a proposta.
-     * 
-     * REGRA DE NEGÓCIO: 
-     *a votação não altera o status da proposta automaticamente. 
-     *o endpoint de votação é estritamente independente do endpoint de status.
-     *nenhuma transição é disparada pela contagem de votos.
-     */
     public VotoResponseDTO votar(Long propostaId, User usuario) {
 
         Proposta proposta = propostaRepository.findById(propostaId)
                 .orElseThrow(() -> new RuntimeException("Proposta não encontrada."));
+
+        if (proposta.getStatus() != StatusProposta.SUBMETIDA
+                && proposta.getStatus() != StatusProposta.EM_ANALISE) {
+            throw new IllegalArgumentException(
+                "Só é possível votar em propostas com status SUBMETIDA ou EM_ANALISE.");
+        }
 
         if (votoRepository.existsByUsuarioAndProposta(usuario, proposta)) {
             throw new RuntimeException("Usuário já votou nesta proposta.");
