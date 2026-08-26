@@ -4,6 +4,28 @@
     <a routerLink="/propostas/nova" class="btn-nova-proposta">+ Nova Proposta</a>
   </div>
 
+  <!-- BARRA DE FILTROS -->
+  <div class="filtros-container">
+    <div class="filtro-grupo">
+      <label>Status:</label>
+      <select [(ngModel)]="filtroStatus" (change)="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option value="SUBMETIDA">Submetida</option>
+        <option value="EM_ANALISE">Em Análise</option>
+        <option value="APROVADA">Aprovada</option>
+        <option value="REJEITADA">Rejeitada</option>
+      </select>
+    </div>
+    
+    <div class="filtro-grupo">
+      <label>Ordenar por:</label>
+      <select [(ngModel)]="ordenacao" (change)="aplicarFiltros()">
+        <option value="recentes">Mais Recentes (Padrão)</option>
+        <option value="antigas">Mais Antigas</option>
+      </select>
+    </div>
+  </div>
+
   @if (carregando()) {
     <p class="status-mensagem">Carregando propostas...</p>
   }
