@@ -28,9 +28,6 @@ public class SecurityConfigurations {
     @Autowired
     private SecurityFilter securityFilter;
 
-    // Configurável via variável de ambiente CORS_ALLOWED_ORIGINS (separadas por vírgula).
-    // Em produção no Render, defina com a URL do frontend, ex:
-    // CORS_ALLOWED_ORIGINS=https://plataforma-ideias-frontend.onrender.com
     @Value("${app.cors.allowed-origins:http://localhost:4200}")
     private String allowedOrigins;
 
