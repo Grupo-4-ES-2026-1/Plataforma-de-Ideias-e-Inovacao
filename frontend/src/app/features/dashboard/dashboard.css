@@ -117,3 +117,44 @@
   background: #10b981;
   transition: width 1s ease-out; /* Animação suave ao carregar a tela */
 }
+/* Barra de Filtros */
+.filtros-dashboard {
+  background-color: #f8f9fa;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  border: 1px solid #e9ecef;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.filtro-grupo label {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #495057;
+}
+
+.filtro-grupo select {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  min-width: 160px;
+  background-color: #fff;
+  font-size: 0.95rem;
+  color: #212529;
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.filtro-grupo select:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}

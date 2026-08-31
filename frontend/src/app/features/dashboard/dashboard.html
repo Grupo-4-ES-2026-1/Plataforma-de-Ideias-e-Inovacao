@@ -14,7 +14,31 @@
 
   @if (!carregando() && !erro()) {
     <div class="dashboard-grid">
-      
+      <!-- BARRA DE FILTROS -->
+        <div class="filtros-dashboard">
+            
+            <div class="filtro-grupo">
+            <label>Período:</label>
+            <select [(ngModel)]="filtroPeriodo" (change)="aplicarFiltros()">
+                <option value="todos">Todo o período</option>
+                <option value="7dias">Últimos 7 dias</option>
+                <option value="30dias">Últimos 30 dias</option>
+                <option value="ano">Este ano</option>
+            </select>
+            </div>
+
+            <div class="filtro-grupo">
+            <label>Categoria:</label>
+            <select [(ngModel)]="filtroCategoria" (change)="aplicarFiltros()">
+                <option value="">Todas as Categorias</option>
+                <!-- Loop dinâmico nas categorias geradas no TypeScript -->
+                @for (cat of categoriasDisponiveis(); track cat) {
+                <option [value]="cat">{{ cat }}</option>
+                }
+            </select>
+            </div>
+    
+  </div>
       <!-- CARD 1: Total de Propostas -->
       <div class="dash-card">
         <h3>Total de Propostas</h3>
