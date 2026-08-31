@@ -185,12 +185,15 @@ public class PropostaService {
         return dto;
     }
 
-    // Dentro da classe PropostaService, adicione:
 
-    public List<PropostaResponseDTO> obterRanking() {
-        List<Proposta> propostasRanking = propostaRepository.buscarRankingPorStatus(
+    public List<PropostaResponseDTO> obterRanking(String categoria, LocalDateTime dataInicial, LocalDateTime dataFinal) {
+
+        List<Proposta> propostasRanking = propostaRepository.buscarRankingComFiltros(
                 StatusProposta.SUBMETIDA,
-                StatusProposta.EM_ANALISE
+                StatusProposta.EM_ANALISE,
+                categoria,
+                dataInicial,
+                dataFinal
         );
 
         return propostasRanking.stream()

@@ -95,8 +95,18 @@ public ResponseEntity<List<PropostaResponseDTO>> listarTodos(
     }
 
     @GetMapping("/ranking")
-    public ResponseEntity<List<PropostaResponseDTO>> obterRanking() {
-        List<PropostaResponseDTO> ranking = propostaService.obterRanking();
+    public ResponseEntity<List<PropostaResponseDTO>> obterRanking(
+            @RequestParam(required = false) String categoria,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime dataInicial,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime dataFinal) {
+
+        List<PropostaResponseDTO> ranking = propostaService.obterRanking(categoria, dataInicial, dataFinal);
         return ResponseEntity.ok(ranking);
     }
 }
