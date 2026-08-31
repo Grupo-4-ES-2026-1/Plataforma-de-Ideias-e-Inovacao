@@ -45,6 +45,22 @@
           </div>
         </div>
       </div>
+      <!-- CARD 3: Taxa de Aprovação-->
+      <div class="dash-card">
+        <h3>Taxa de Aprovação</h3>
+        
+        <!-- O valor em porcentagem -->
+        <div class="numero-destaque" style="color: #10b981;">
+          {{ taxaAprovacao() }}%
+        </div>
+        
+        <p class="card-rodape">Ideias aprovadas em relação ao total</p>
+        
+        <!-- Barra de progresso visual -->
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" [style.width.%]="taxaAprovacao()"></div>
+        </div>
+      </div>
 
     </div>
   }
