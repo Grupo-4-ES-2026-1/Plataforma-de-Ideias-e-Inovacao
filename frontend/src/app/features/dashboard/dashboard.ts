@@ -15,10 +15,11 @@ export class DashboardComponent implements OnInit {
   carregando = signal(true);
   erro = signal('');
 
-  //sinais para guardar as métricas
-  totalPropostas = signal(0);
+  
+  totalPropostas = signal(0);//sinais para guardar as métricas
   distribuicao = signal({ submetida: 0, emAnalise: 0, aprovada: 0, rejeitada: 0 });
   taxaAprovacao = signal(0);
+  totalVotos = signal(0);//sinal para o engajamento (total de votos)
 
   ngOnInit(): void {
     //busca todas as propostas para calcular as estatísticas
@@ -45,8 +46,13 @@ export class DashboardComponent implements OnInit {
         
         //Math.round arredonda para não ficar com números quebrados 
         this.taxaAprovacao.set(Math.round(taxa)); 
+        //calcula o engajamento somando os votos de todas as propostas
+        const somaVotos = propostas.reduce((acumulador, proposta) => {
+          return acumulador + (proposta.numeroDeVotos || 0);
+        }, 0);
         
-        this.carregando.set(false);
+        this.totalVotos.set(somaVotos);
+        
         this.carregando.set(false);
       },
       error: () => {
