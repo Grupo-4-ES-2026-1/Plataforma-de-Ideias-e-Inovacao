@@ -344,8 +344,9 @@ class PropostaServiceTest {
         propostaEmpatadaRecente.setStatus(StatusProposta.SUBMETIDA);
         propostaEmpatadaRecente.setDataCriacao(LocalDateTime.now().minusDays(1));
 
-        // Simulando o retorno já ordenado da Query JPQL
-        when(propostaRepository.buscarRankingPorStatus(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE))
+        // Correção aqui: usando buscarRankingComFiltros e passando os nulls
+        when(propostaRepository.buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, null, null, null))
                 .thenReturn(List.of(propostaCampeã, propostaEmpatadaAntiga, propostaEmpatadaRecente));
 
         // Simulando a contagem de votos do VotoService que é chamado pelo método paraDTO
@@ -354,7 +355,7 @@ class PropostaServiceTest {
         when(votoService.contarVotos(3L)).thenReturn(10L);
 
         // Act
-        List<PropostaResponseDTO> resultado = propostaService.obterRanking();
+        List<PropostaResponseDTO> resultado = propostaService.obterRanking(null, null, null);
 
         // Assert
         assertNotNull(resultado);
@@ -372,8 +373,81 @@ class PropostaServiceTest {
         assertEquals(3L, resultado.get(2).getId());
         assertEquals(10L, resultado.get(2).getNumeroDeVotos());
 
-        // Verifica se a chamada correta foi feita
-        verify(propostaRepository, times(1)).buscarRankingPorStatus(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE);
+        // Correção aqui: usando buscarRankingComFiltros e passando os nulls
+        verify(propostaRepository, times(1)).buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, null, null, null);
+    }
+
+    @Test
+    void deveFiltrarRankingPorCategoria() {
+        // Arrange
+        Proposta p1 = new Proposta();
+        p1.setId(1L);
+        p1.setCategoria("Saúde");
+        p1.setStatus(StatusProposta.SUBMETIDA);
+
+        when(propostaRepository.buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, "Saúde", null, null))
+                .thenReturn(List.of(p1));
+
+        when(votoService.contarVotos(1L)).thenReturn(5L);
+
+        // Act
+        List<PropostaResponseDTO> resultado = propostaService.obterRanking("Saúde", null, null);
+
+        // Assert
+        assertEquals(1, resultado.size());
+        assertEquals("Saúde", resultado.get(0).getCategoria());
+        verify(propostaRepository).buscarRankingComFiltros(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, "Saúde", null, null);
+    }
+
+    @Test
+    void deveFiltrarRankingPorPeriodo() {
+        // Arrange
+        Proposta p1 = new Proposta();
+        p1.setId(1L);
+        p1.setStatus(StatusProposta.SUBMETIDA);
+
+        LocalDateTime dataInicial = LocalDateTime.now().minusDays(10);
+        LocalDateTime dataFinal = LocalDateTime.now();
+
+        when(propostaRepository.buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, null, dataInicial, dataFinal))
+                .thenReturn(List.of(p1));
+
+        when(votoService.contarVotos(1L)).thenReturn(10L);
+
+        // Act
+        List<PropostaResponseDTO> resultado = propostaService.obterRanking(null, dataInicial, dataFinal);
+
+        // Assert
+        assertEquals(1, resultado.size());
+        verify(propostaRepository).buscarRankingComFiltros(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, null, dataInicial, dataFinal);
+    }
+
+    @Test
+    void deveFiltrarRankingCombinandoFiltros() {
+        // Arrange
+        Proposta p1 = new Proposta();
+        p1.setId(1L);
+        p1.setCategoria("Tecnologia");
+        p1.setStatus(StatusProposta.EM_ANALISE);
+
+        LocalDateTime dataInicial = LocalDateTime.now().minusDays(5);
+        LocalDateTime dataFinal = LocalDateTime.now();
+
+        when(propostaRepository.buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, "Tecnologia", dataInicial, dataFinal))
+                .thenReturn(List.of(p1));
+
+        when(votoService.contarVotos(1L)).thenReturn(15L);
+
+        // Act
+        List<PropostaResponseDTO> resultado = propostaService.obterRanking("Tecnologia", dataInicial, dataFinal);
+
+        // Assert
+        assertEquals(1, resultado.size());
+        verify(propostaRepository).buscarRankingComFiltros(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, "Tecnologia", dataInicial, dataFinal);
     }
 
     private Proposta criarProposta(Long id, String titulo) {
