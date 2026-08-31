@@ -1,15 +1,16 @@
 package PlataformaIdeiasInovacao.proposta;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -323,6 +324,56 @@ class PropostaServiceTest {
         dto.setCategoria("TECNOLOGIA");
 
         return dto;
+    }
+
+    @Test
+    void deveRetornarRankingOrdenadoPorVotosEDesempatePorData() {
+        // Arrange
+        Proposta propostaCampeã = new Proposta();
+        propostaCampeã.setId(1L);
+        propostaCampeã.setStatus(StatusProposta.SUBMETIDA);
+        propostaCampeã.setDataCriacao(LocalDateTime.now());
+
+        Proposta propostaEmpatadaAntiga = new Proposta();
+        propostaEmpatadaAntiga.setId(2L);
+        propostaEmpatadaAntiga.setStatus(StatusProposta.EM_ANALISE);
+        propostaEmpatadaAntiga.setDataCriacao(LocalDateTime.now().minusDays(5));
+
+        Proposta propostaEmpatadaRecente = new Proposta();
+        propostaEmpatadaRecente.setId(3L);
+        propostaEmpatadaRecente.setStatus(StatusProposta.SUBMETIDA);
+        propostaEmpatadaRecente.setDataCriacao(LocalDateTime.now().minusDays(1));
+
+        // Simulando o retorno já ordenado da Query JPQL
+        when(propostaRepository.buscarRankingPorStatus(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE))
+                .thenReturn(List.of(propostaCampeã, propostaEmpatadaAntiga, propostaEmpatadaRecente));
+
+        // Simulando a contagem de votos do VotoService que é chamado pelo método paraDTO
+        when(votoService.contarVotos(1L)).thenReturn(25L);
+        when(votoService.contarVotos(2L)).thenReturn(10L);
+        when(votoService.contarVotos(3L)).thenReturn(10L);
+
+        // Act
+        List<PropostaResponseDTO> resultado = propostaService.obterRanking();
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(3, resultado.size());
+
+        // Verifica a lógica de ordem (1º lugar)
+        assertEquals(1L, resultado.get(0).getId());
+        assertEquals(25L, resultado.get(0).getNumeroDeVotos());
+
+        // Verifica desempate (2º lugar deve ser a mais antiga)
+        assertEquals(2L, resultado.get(1).getId());
+        assertEquals(10L, resultado.get(1).getNumeroDeVotos());
+
+        // Verifica desempate (3º lugar deve ser a mais recente com mesmos votos)
+        assertEquals(3L, resultado.get(2).getId());
+        assertEquals(10L, resultado.get(2).getNumeroDeVotos());
+
+        // Verifica se a chamada correta foi feita
+        verify(propostaRepository, times(1)).buscarRankingPorStatus(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE);
     }
 
     private Proposta criarProposta(Long id, String titulo) {
