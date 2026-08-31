@@ -93,4 +93,10 @@ public ResponseEntity<List<PropostaResponseDTO>> listarTodos(
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<PropostaResponseDTO>> obterRanking() {
+        List<PropostaResponseDTO> ranking = propostaService.obterRanking();
+        return ResponseEntity.ok(ranking);
+    }
 }
