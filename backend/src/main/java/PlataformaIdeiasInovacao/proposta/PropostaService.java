@@ -184,4 +184,17 @@ public class PropostaService {
 
         return dto;
     }
+
+    // Dentro da classe PropostaService, adicione:
+
+    public List<PropostaResponseDTO> obterRanking() {
+        List<Proposta> propostasRanking = propostaRepository.buscarRankingPorStatus(
+                StatusProposta.SUBMETIDA,
+                StatusProposta.EM_ANALISE
+        );
+
+        return propostasRanking.stream()
+                .map(this::paraDTO)
+                .toList();
+    }
 }
