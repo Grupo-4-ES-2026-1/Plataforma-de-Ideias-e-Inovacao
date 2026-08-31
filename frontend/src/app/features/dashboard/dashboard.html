@@ -85,7 +85,22 @@
           <div class="progress-bar-fill" [style.width.%]="taxaAprovacao()"></div>
         </div>
       </div>
-
+      <!-- CARD 4: Engajamento (Issue #143) -->
+      <div class="dash-card">
+        <h3>Engajamento Total</h3>
+        
+        <!-- Usamos um laranja/dourado para representar energia/votos -->
+        <div class="numero-destaque" style="color: #f59e0b;">
+          {{ totalVotos() }}
+        </div>
+        
+        <p class="card-rodape">Votos registrados em todas as ideias</p>
+        
+        <!-- Pequena barra visual opcional para manter o padrão do card anterior -->
+        <div class="progress-bar-container" style="background-color: #fef3c7;">
+          <div class="progress-bar-fill" style="background-color: #f59e0b; width: 100%;"></div>
+        </div>
+      </div>
     </div>
   }
 </section>
