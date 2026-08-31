@@ -184,4 +184,20 @@ public class PropostaService {
 
         return dto;
     }
+
+
+    public List<PropostaResponseDTO> obterRanking(String categoria, LocalDateTime dataInicial, LocalDateTime dataFinal) {
+
+        List<Proposta> propostasRanking = propostaRepository.buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA,
+                StatusProposta.EM_ANALISE,
+                categoria,
+                dataInicial,
+                dataFinal
+        );
+
+        return propostasRanking.stream()
+                .map(this::paraDTO)
+                .toList();
+    }
 }

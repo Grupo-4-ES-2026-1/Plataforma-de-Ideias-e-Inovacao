@@ -33,4 +33,22 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
             @Param("dataFinal") LocalDateTime dataFinal,
             Pageable pageable
     );
+
+    @Query("""
+        SELECT p FROM Proposta p
+        LEFT JOIN Voto v ON v.proposta = p
+        WHERE p.status IN (:status1, :status2)
+        AND (:categoria IS NULL OR p.categoria = :categoria)
+        AND (:dataInicial IS NULL OR p.dataCriacao >= :dataInicial)
+        AND (:dataFinal IS NULL OR p.dataCriacao <= :dataFinal)
+        GROUP BY p.id
+        ORDER BY COUNT(v.id) DESC, p.dataCriacao ASC
+    """)
+    List<Proposta> buscarRankingComFiltros(
+            @Param("status1") StatusProposta status1,
+            @Param("status2") StatusProposta status2,
+            @Param("categoria") String categoria,
+            @Param("dataInicial") LocalDateTime dataInicial,
+            @Param("dataFinal") LocalDateTime dataFinal
+    );
 }

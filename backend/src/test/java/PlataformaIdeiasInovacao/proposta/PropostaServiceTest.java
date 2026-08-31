@@ -1,15 +1,16 @@
 package PlataformaIdeiasInovacao.proposta;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -323,6 +324,130 @@ class PropostaServiceTest {
         dto.setCategoria("TECNOLOGIA");
 
         return dto;
+    }
+
+    @Test
+    void deveRetornarRankingOrdenadoPorVotosEDesempatePorData() {
+        // Arrange
+        Proposta propostaCampeã = new Proposta();
+        propostaCampeã.setId(1L);
+        propostaCampeã.setStatus(StatusProposta.SUBMETIDA);
+        propostaCampeã.setDataCriacao(LocalDateTime.now());
+
+        Proposta propostaEmpatadaAntiga = new Proposta();
+        propostaEmpatadaAntiga.setId(2L);
+        propostaEmpatadaAntiga.setStatus(StatusProposta.EM_ANALISE);
+        propostaEmpatadaAntiga.setDataCriacao(LocalDateTime.now().minusDays(5));
+
+        Proposta propostaEmpatadaRecente = new Proposta();
+        propostaEmpatadaRecente.setId(3L);
+        propostaEmpatadaRecente.setStatus(StatusProposta.SUBMETIDA);
+        propostaEmpatadaRecente.setDataCriacao(LocalDateTime.now().minusDays(1));
+
+        // Correção aqui: usando buscarRankingComFiltros e passando os nulls
+        when(propostaRepository.buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, null, null, null))
+                .thenReturn(List.of(propostaCampeã, propostaEmpatadaAntiga, propostaEmpatadaRecente));
+
+        // Simulando a contagem de votos do VotoService que é chamado pelo método paraDTO
+        when(votoService.contarVotos(1L)).thenReturn(25L);
+        when(votoService.contarVotos(2L)).thenReturn(10L);
+        when(votoService.contarVotos(3L)).thenReturn(10L);
+
+        // Act
+        List<PropostaResponseDTO> resultado = propostaService.obterRanking(null, null, null);
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(3, resultado.size());
+
+        // Verifica a lógica de ordem (1º lugar)
+        assertEquals(1L, resultado.get(0).getId());
+        assertEquals(25L, resultado.get(0).getNumeroDeVotos());
+
+        // Verifica desempate (2º lugar deve ser a mais antiga)
+        assertEquals(2L, resultado.get(1).getId());
+        assertEquals(10L, resultado.get(1).getNumeroDeVotos());
+
+        // Verifica desempate (3º lugar deve ser a mais recente com mesmos votos)
+        assertEquals(3L, resultado.get(2).getId());
+        assertEquals(10L, resultado.get(2).getNumeroDeVotos());
+
+        // Correção aqui: usando buscarRankingComFiltros e passando os nulls
+        verify(propostaRepository, times(1)).buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, null, null, null);
+    }
+
+    @Test
+    void deveFiltrarRankingPorCategoria() {
+        // Arrange
+        Proposta p1 = new Proposta();
+        p1.setId(1L);
+        p1.setCategoria("Saúde");
+        p1.setStatus(StatusProposta.SUBMETIDA);
+
+        when(propostaRepository.buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, "Saúde", null, null))
+                .thenReturn(List.of(p1));
+
+        when(votoService.contarVotos(1L)).thenReturn(5L);
+
+        // Act
+        List<PropostaResponseDTO> resultado = propostaService.obterRanking("Saúde", null, null);
+
+        // Assert
+        assertEquals(1, resultado.size());
+        assertEquals("Saúde", resultado.get(0).getCategoria());
+        verify(propostaRepository).buscarRankingComFiltros(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, "Saúde", null, null);
+    }
+
+    @Test
+    void deveFiltrarRankingPorPeriodo() {
+        // Arrange
+        Proposta p1 = new Proposta();
+        p1.setId(1L);
+        p1.setStatus(StatusProposta.SUBMETIDA);
+
+        LocalDateTime dataInicial = LocalDateTime.now().minusDays(10);
+        LocalDateTime dataFinal = LocalDateTime.now();
+
+        when(propostaRepository.buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, null, dataInicial, dataFinal))
+                .thenReturn(List.of(p1));
+
+        when(votoService.contarVotos(1L)).thenReturn(10L);
+
+        // Act
+        List<PropostaResponseDTO> resultado = propostaService.obterRanking(null, dataInicial, dataFinal);
+
+        // Assert
+        assertEquals(1, resultado.size());
+        verify(propostaRepository).buscarRankingComFiltros(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, null, dataInicial, dataFinal);
+    }
+
+    @Test
+    void deveFiltrarRankingCombinandoFiltros() {
+        // Arrange
+        Proposta p1 = new Proposta();
+        p1.setId(1L);
+        p1.setCategoria("Tecnologia");
+        p1.setStatus(StatusProposta.EM_ANALISE);
+
+        LocalDateTime dataInicial = LocalDateTime.now().minusDays(5);
+        LocalDateTime dataFinal = LocalDateTime.now();
+
+        when(propostaRepository.buscarRankingComFiltros(
+                StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, "Tecnologia", dataInicial, dataFinal))
+                .thenReturn(List.of(p1));
+
+        when(votoService.contarVotos(1L)).thenReturn(15L);
+
+        // Act
+        List<PropostaResponseDTO> resultado = propostaService.obterRanking("Tecnologia", dataInicial, dataFinal);
+
+        // Assert
+        assertEquals(1, resultado.size());
+        verify(propostaRepository).buscarRankingComFiltros(StatusProposta.SUBMETIDA, StatusProposta.EM_ANALISE, "Tecnologia", dataInicial, dataFinal);
     }
 
     private Proposta criarProposta(Long id, String titulo) {
