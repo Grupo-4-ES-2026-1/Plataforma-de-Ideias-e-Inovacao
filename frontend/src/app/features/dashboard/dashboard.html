@@ -1,0 +1,51 @@
+<section class="dashboard-container">
+  <div class="dashboard-header">
+    <h2>Visão Geral do Sistema</h2>
+    <p>Acompanhe o engajamento e o status das ideias de inovação.</p>
+  </div>
+
+  @if (carregando()) {
+    <p class="status-mensagem">Processando métricas...</p>
+  }
+
+  @if (erro()) {
+    <p class="status-mensagem erro">{{ erro() }}</p>
+  }
+
+  @if (!carregando() && !erro()) {
+    <div class="dashboard-grid">
+      
+      <!-- CARD 1: Total de Propostas -->
+      <div class="dash-card">
+        <h3>Total de Propostas</h3>
+        <div class="numero-destaque">{{ totalPropostas() }}</div>
+        <p class="card-rodape">Ideias cadastradas até o momento</p>
+      </div>
+
+      <!-- CARD 2: Distribuição por Status -->
+      <div class="dash-card">
+        <h3>Distribuição por Status</h3>
+        
+        <div class="dist-lista">
+          <div class="dist-item">
+            <span class="badge submetida">Submetidas</span>
+            <span class="valor">{{ distribuicao().submetida }}</span>
+          </div>
+          <div class="dist-item">
+            <span class="badge em-analise">Em Análise</span>
+            <span class="valor">{{ distribuicao().emAnalise }}</span>
+          </div>
+          <div class="dist-item">
+            <span class="badge aprovada">Aprovadas</span>
+            <span class="valor">{{ distribuicao().aprovada }}</span>
+          </div>
+          <div class="dist-item">
+            <span class="badge rejeitada">Rejeitadas</span>
+            <span class="valor">{{ distribuicao().rejeitada }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  }
+</section>

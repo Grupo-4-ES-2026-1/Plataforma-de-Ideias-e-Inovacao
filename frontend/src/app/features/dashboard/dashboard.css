@@ -1,0 +1,102 @@
+.dashboard-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h2 {
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-header p {
+  color: #6b7280;
+  margin: 0;
+}
+
+.status-mensagem {
+  text-align: center;
+  color: #6b7280;
+  margin-top: 2rem;
+}
+.status-mensagem.erro { color: #dc2626; }
+
+/* Grid dos Cards */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Estilo Base do Card */
+.dash-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.dash-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Estilos Específicos - Total */
+.numero-destaque {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #6366f1;
+  line-height: 1;
+}
+
+.card-rodape {
+  margin: 1rem 0 0 0;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* Estilos Específicos - Distribuição */
+.dist-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+.dist-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.valor {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+/* Badges Coloridas para os Status */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.badge.submetida { background: #e0f2fe; color: #0284c7; }
+.badge.em-analise { background: #fef3c7; color: #d97706; }
+.badge.aprovada { background: #dcfce7; color: #15803d; }
+.badge.rejeitada { background: #fee2e2; color: #b91c1c; }
