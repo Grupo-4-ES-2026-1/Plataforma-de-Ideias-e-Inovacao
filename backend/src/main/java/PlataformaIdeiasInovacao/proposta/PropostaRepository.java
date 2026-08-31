@@ -3,6 +3,7 @@ package PlataformaIdeiasInovacao.proposta;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import PlataformaIdeiasInovacao.proposta.indicador.StatusCountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,6 +18,33 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     // US12 / #105
     // Permite filtrar as propostas por status e aplicar ordenação.
     List<Proposta> findByStatus(StatusProposta status, Sort sort);
+
+    @Query("""
+    SELECT COUNT(p)
+    FROM Proposta p
+    WHERE (:categoria IS NULL OR p.categoria = :categoria)
+    AND (:dataInicial IS NULL OR p.dataCriacao >= :dataInicial)
+    AND (:dataFinal IS NULL OR p.dataCriacao <= :dataFinal)
+    """)
+    long contarTotalComFiltros(
+            @Param("categoria") String categoria,
+            @Param("dataInicial") LocalDateTime dataInicial,
+            @Param("dataFinal") LocalDateTime dataFinal
+    );
+
+    @Query("""
+        SELECT p.status AS status, COUNT(p) AS total
+        FROM Proposta p
+        WHERE (:categoria IS NULL OR p.categoria = :categoria)
+        AND (:dataInicial IS NULL OR p.dataCriacao >= :dataInicial)
+        AND (:dataFinal IS NULL OR p.dataCriacao <= :dataFinal)
+        GROUP BY p.status
+    """)
+    List<StatusCountProjection> contarPorStatusComFiltros(
+            @Param("categoria") String categoria,
+            @Param("dataInicial") LocalDateTime dataInicial,
+            @Param("dataFinal") LocalDateTime dataFinal
+    );
 
     @Query("""
         SELECT p FROM Proposta p
