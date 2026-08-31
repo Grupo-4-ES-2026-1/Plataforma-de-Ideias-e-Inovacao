@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   //sinais para guardar as métricas
   totalPropostas = signal(0);
   distribuicao = signal({ submetida: 0, emAnalise: 0, aprovada: 0, rejeitada: 0 });
+  taxaAprovacao = signal(0);
 
   ngOnInit(): void {
     //busca todas as propostas para calcular as estatísticas
@@ -37,6 +38,15 @@ export class DashboardComponent implements OnInit {
         });
         
         this.distribuicao.set(contagem);
+        
+        //calcula a porcentagem de aprovação
+        const total = propostas.length;
+        const taxa = total > 0 ? (contagem.aprovada / total) * 100 : 0;
+        
+        //Math.round arredonda para não ficar com números quebrados 
+        this.taxaAprovacao.set(Math.round(taxa)); 
+        
+        this.carregando.set(false);
         this.carregando.set(false);
       },
       error: () => {
