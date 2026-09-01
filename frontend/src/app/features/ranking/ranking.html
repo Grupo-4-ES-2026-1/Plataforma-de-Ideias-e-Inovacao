@@ -1,0 +1,47 @@
+<section class="ranking-container">
+  <div class="ranking-header">
+    <h2>Ranking de Propostas</h2>
+    <p>Confira as propostas mais votadas da plataforma.</p>
+  </div>
+
+  @if (carregando()) {
+    <p class="status-mensagem">Carregando ranking...</p>
+  }
+
+  @if (erro()) {
+    <p class="status-mensagem erro">{{ erro() }}</p>
+  }
+
+  @if (!carregando() && !erro()) {
+    <div class="ranking-lista">
+      @for (proposta of propostas(); track proposta.id; let posicao = $index) {
+        <div class="ranking-card">
+          <div class="ranking-posicao">
+            {{ posicao + 1 }}º
+          </div>
+
+          <div class="ranking-conteudo">
+            <h3>{{ proposta.titulo }}</h3>
+
+            <p class="ranking-categoria">
+              {{ proposta.categoria }}
+            </p>
+          </div>
+
+          <div class="ranking-votos">
+            <strong>{{ proposta.numeroDeVotos }}</strong>
+            <span>votos</span>
+          </div>
+
+          <button [routerLink]="['/propostas', proposta.id]">
+            Ver Detalhes
+          </button>
+        </div>
+      } @empty {
+        <p class="status-mensagem">
+          Nenhuma proposta disponível para o ranking.
+        </p>
+      }
+    </div>
+  }
+</section>
