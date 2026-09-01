@@ -1,14 +1,13 @@
 package PlataformaIdeiasInovacao.proposta;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
@@ -124,5 +123,35 @@ class PropostaControllerTest {
 
         assertThat(response.getBody().getStatus())
                 .isEqualTo("EM_ANALISE");
+    }
+
+    @Test
+    void deveRetornarRankingDePropostas() {
+        PropostaResponseDTO proposta = new PropostaResponseDTO();
+        proposta.setId(1L);
+        proposta.setTitulo("Proposta mais votada");
+        proposta.setStatus("EM_ANALISE");
+
+        when(propostaService.obterRanking(null, null, null))
+                .thenReturn(List.of(proposta));
+
+        ResponseEntity<List<PropostaResponseDTO>> response =
+                propostaController.obterRanking(null, null, null);
+
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
+        assertThat(response.getBody()).hasSize(1);
+        assertThat(response.getBody().get(0).getTitulo()).isEqualTo("Proposta mais votada");
+    }
+
+    @Test
+    void deveRetornarRankingFiltradoPorCategoria() {
+        when(propostaService.obterRanking("Saúde", null, null))
+                .thenReturn(List.of());
+
+        ResponseEntity<List<PropostaResponseDTO>> response =
+                propostaController.obterRanking("Saúde", null, null);
+
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
+        assertThat(response.getBody()).isEmpty();
     }
 }

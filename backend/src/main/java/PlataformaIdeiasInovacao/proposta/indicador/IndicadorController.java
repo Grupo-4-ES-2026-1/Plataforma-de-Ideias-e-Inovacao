@@ -2,10 +2,12 @@ package PlataformaIdeiasInovacao.proposta.indicador;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import PlataformaIdeiasInovacao.proposta.indicador.dto.EngajamentoDTO;
 import PlataformaIdeiasInovacao.proposta.indicador.dto.IndicadoresPropostasDTO;
@@ -15,8 +17,11 @@ import PlataformaIdeiasInovacao.proposta.indicador.dto.TaxaAprovacaoDTO;
 @RequestMapping("/propostas/indicadores")
 public class IndicadorController {
 
-    @Autowired
-    private IndicadorService indicadorService;
+    private final IndicadorService indicadorService;
+
+    public IndicadorController(IndicadorService indicadorService) {
+        this.indicadorService = indicadorService;
+    }
 
     @GetMapping
     public ResponseEntity<IndicadoresPropostasDTO> buscarIndicadores(
