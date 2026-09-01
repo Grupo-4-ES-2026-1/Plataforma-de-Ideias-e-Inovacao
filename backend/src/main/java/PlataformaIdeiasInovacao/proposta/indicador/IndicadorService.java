@@ -4,24 +4,25 @@ import java.time.LocalDateTime;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import PlataformaIdeiasInovacao.proposta.PropostaRepository;
 import PlataformaIdeiasInovacao.proposta.StatusProposta;
-import PlataformaIdeiasInovacao.proposta.indicador.dto.IndicadoresPropostasDTO;
-import PlataformaIdeiasInovacao.voto.VotoRepository;
 import PlataformaIdeiasInovacao.proposta.indicador.dto.EngajamentoDTO;
+import PlataformaIdeiasInovacao.proposta.indicador.dto.IndicadoresPropostasDTO;
 import PlataformaIdeiasInovacao.proposta.indicador.dto.TaxaAprovacaoDTO;
+import PlataformaIdeiasInovacao.voto.VotoRepository;
 
 @Service
 public class IndicadorService {
 
-    @Autowired
-    private PropostaRepository propostaRepository;
+    private final PropostaRepository propostaRepository;
+    private final VotoRepository votoRepository;
 
-    @Autowired
-    private VotoRepository votoRepository;
+    public IndicadorService(PropostaRepository propostaRepository, VotoRepository votoRepository) {
+        this.propostaRepository = propostaRepository;
+        this.votoRepository = votoRepository;
+    }
 
     public IndicadoresPropostasDTO buscarIndicadores(
             String categoria,
