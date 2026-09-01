@@ -149,6 +149,42 @@ describe('RankingComponent', () => {
     expect(ranking[0].id).toBe(1);
   });
 
+  it('should filter propostas by categoria', () => {
+    fixture.detectChanges();
+
+    const req = httpMock.expectOne(req => req.url === apiUrl);
+
+    req.flush([
+      {
+        id: 1,
+        titulo: 'Proposta Tecnologia',
+        descricao: 'Descrição',
+        categoria: 'TECNOLOGIA',
+        status: 'SUBMETIDA',
+        numeroDeVotos: 5,
+        dataCriacao: '2026-09-01T10:00:00',
+      },
+      {
+        id: 2,
+        titulo: 'Proposta Saúde',
+        descricao: 'Descrição',
+        categoria: 'SAUDE',
+        status: 'SUBMETIDA',
+        numeroDeVotos: 8,
+        dataCriacao: '2026-09-01T10:00:00',
+      },
+    ]);
+
+    component.filtroCategoria = 'TECNOLOGIA';
+    component.aplicarFiltros();
+
+    const ranking = component.propostas();
+
+    expect(ranking.length).toBe(1);
+    expect(ranking[0].id).toBe(1);
+    expect(ranking[0].categoria).toBe('TECNOLOGIA');
+  });
+
   it('should set erro when backend request fails', () => {
     fixture.detectChanges();
 
