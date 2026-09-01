@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
 
 import { RankingComponent } from './ranking';
@@ -11,6 +14,8 @@ describe('RankingComponent', () => {
 
   const apiUrl =
     'https://plataforma-de-ideias-e-inovacao.onrender.com/propostas';
+
+  const rankingUrl = `${apiUrl}/ranking`;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,31 +32,59 @@ describe('RankingComponent', () => {
     httpMock.verify();
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-
-    const req = httpMock.expectOne(req => req.url === apiUrl);
-    req.flush([]);
-
-    expect(component).toBeTruthy();
-  });
-
-  it('should load propostas and order by numeroDeVotos descending', () => {
-    fixture.detectChanges();
-
-    const req = httpMock.expectOne(req => req.url === apiUrl);
+  function responderCategorias(): void {
+    const req = httpMock.expectOne(
+      request => request.url === apiUrl
+    );
 
     expect(req.request.method).toBe('GET');
 
     req.flush([
       {
         id: 1,
-        titulo: 'Proposta A',
-        descricao: 'Descrição A',
+        titulo: 'Proposta Tecnologia',
+        descricao: 'Descrição',
         categoria: 'TECNOLOGIA',
         status: 'SUBMETIDA',
-        numeroDeVotos: 3,
+        numeroDeVotos: 5,
       },
+      {
+        id: 2,
+        titulo: 'Proposta Saúde',
+        descricao: 'Descrição',
+        categoria: 'SAUDE',
+        status: 'SUBMETIDA',
+        numeroDeVotos: 8,
+      },
+    ]);
+  }
+
+  it('should create', () => {
+    fixture.detectChanges();
+
+    responderCategorias();
+
+    const reqRanking = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
+
+    reqRanking.flush([]);
+
+    expect(component).toBeTruthy();
+  });
+
+  it('should load ranking preserving backend order', () => {
+    fixture.detectChanges();
+
+    responderCategorias();
+
+    const reqRanking = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
+
+    expect(reqRanking.request.method).toBe('GET');
+
+    reqRanking.flush([
       {
         id: 2,
         titulo: 'Proposta B',
@@ -68,6 +101,14 @@ describe('RankingComponent', () => {
         status: 'SUBMETIDA',
         numeroDeVotos: 6,
       },
+      {
+        id: 1,
+        titulo: 'Proposta A',
+        descricao: 'Descrição A',
+        categoria: 'TECNOLOGIA',
+        status: 'SUBMETIDA',
+        numeroDeVotos: 3,
+      },
     ]);
 
     const ranking = component.propostas();
@@ -79,82 +120,28 @@ describe('RankingComponent', () => {
     expect(component.carregando()).toBe(false);
   });
 
-  it('should filter propostas by dataInicial', () => {
+  it('should send categoria to ranking endpoint', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne(req => req.url === apiUrl);
+    responderCategorias();
 
-    req.flush([
-      {
-        id: 1,
-        titulo: 'Proposta Antiga',
-        descricao: 'Descrição',
-        categoria: 'TECNOLOGIA',
-        status: 'SUBMETIDA',
-        numeroDeVotos: 5,
-        dataCriacao: '2026-08-01T10:00:00',
-      },
-      {
-        id: 2,
-        titulo: 'Proposta Nova',
-        descricao: 'Descrição',
-        categoria: 'TECNOLOGIA',
-        status: 'SUBMETIDA',
-        numeroDeVotos: 8,
-        dataCriacao: '2026-09-01T10:00:00',
-      },
-    ]);
+    const reqInicial = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
 
-    component.dataInicial = '2026-09-01';
+    reqInicial.flush([]);
+
+    component.filtroCategoria = 'TECNOLOGIA';
     component.aplicarFiltros();
 
-    const ranking = component.propostas();
+    const reqFiltro = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
 
-    expect(ranking.length).toBe(1);
-    expect(ranking[0].id).toBe(2);
-  });
+    expect(reqFiltro.request.params.get('categoria'))
+      .toBe('TECNOLOGIA');
 
-  it('should filter propostas by dataFinal', () => {
-    fixture.detectChanges();
-
-    const req = httpMock.expectOne(req => req.url === apiUrl);
-
-    req.flush([
-      {
-        id: 1,
-        titulo: 'Proposta Antiga',
-        descricao: 'Descrição',
-        categoria: 'TECNOLOGIA',
-        status: 'SUBMETIDA',
-        numeroDeVotos: 5,
-        dataCriacao: '2026-08-01T10:00:00',
-      },
-      {
-        id: 2,
-        titulo: 'Proposta Nova',
-        descricao: 'Descrição',
-        categoria: 'TECNOLOGIA',
-        status: 'SUBMETIDA',
-        numeroDeVotos: 8,
-        dataCriacao: '2026-09-01T10:00:00',
-      },
-    ]);
-
-    component.dataFinal = '2026-08-31';
-    component.aplicarFiltros();
-
-    const ranking = component.propostas();
-
-    expect(ranking.length).toBe(1);
-    expect(ranking[0].id).toBe(1);
-  });
-
-  it('should filter propostas by categoria', () => {
-    fixture.detectChanges();
-
-    const req = httpMock.expectOne(req => req.url === apiUrl);
-
-    req.flush([
+    reqFiltro.flush([
       {
         id: 1,
         titulo: 'Proposta Tecnologia',
@@ -162,35 +149,133 @@ describe('RankingComponent', () => {
         categoria: 'TECNOLOGIA',
         status: 'SUBMETIDA',
         numeroDeVotos: 5,
-        dataCriacao: '2026-09-01T10:00:00',
       },
+    ]);
+
+    expect(component.propostas().length).toBe(1);
+    expect(component.propostas()[0].categoria)
+      .toBe('TECNOLOGIA');
+  });
+
+  it('should send dataInicial to ranking endpoint', () => {
+    fixture.detectChanges();
+
+    responderCategorias();
+
+    const reqInicial = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
+
+    reqInicial.flush([]);
+
+    component.dataInicial = '2026-09-01';
+    component.aplicarFiltros();
+
+    const reqFiltro = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
+
+    expect(reqFiltro.request.params.get('dataInicial'))
+      .toBe('2026-09-01T00:00:00');
+
+    reqFiltro.flush([
       {
         id: 2,
-        titulo: 'Proposta Saúde',
+        titulo: 'Proposta Nova',
         descricao: 'Descrição',
-        categoria: 'SAUDE',
+        categoria: 'TECNOLOGIA',
         status: 'SUBMETIDA',
         numeroDeVotos: 8,
         dataCriacao: '2026-09-01T10:00:00',
       },
     ]);
 
-    component.filtroCategoria = 'TECNOLOGIA';
-    component.aplicarFiltros();
-
-    const ranking = component.propostas();
-
-    expect(ranking.length).toBe(1);
-    expect(ranking[0].id).toBe(1);
-    expect(ranking[0].categoria).toBe('TECNOLOGIA');
+    expect(component.propostas().length).toBe(1);
+    expect(component.propostas()[0].id).toBe(2);
   });
 
-  it('should set erro when backend request fails', () => {
+  it('should send dataFinal to ranking endpoint', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne(req => req.url === apiUrl);
+    responderCategorias();
 
-    req.error(new ProgressEvent('erro de rede'));
+    const reqInicial = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
+
+    reqInicial.flush([]);
+
+    component.dataFinal = '2026-08-31';
+    component.aplicarFiltros();
+
+    const reqFiltro = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
+
+    expect(reqFiltro.request.params.get('dataFinal'))
+      .toBe('2026-08-31T23:59:59');
+
+    reqFiltro.flush([
+      {
+        id: 1,
+        titulo: 'Proposta Antiga',
+        descricao: 'Descrição',
+        categoria: 'TECNOLOGIA',
+        status: 'SUBMETIDA',
+        numeroDeVotos: 5,
+        dataCriacao: '2026-08-01T10:00:00',
+      },
+    ]);
+
+    expect(component.propostas().length).toBe(1);
+    expect(component.propostas()[0].id).toBe(1);
+  });
+
+  it('should send all filters together', () => {
+    fixture.detectChanges();
+
+    responderCategorias();
+
+    const reqInicial = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
+
+    reqInicial.flush([]);
+
+    component.filtroCategoria = 'TECNOLOGIA';
+    component.dataInicial = '2026-09-01';
+    component.dataFinal = '2026-09-30';
+
+    component.aplicarFiltros();
+
+    const reqFiltro = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
+
+    expect(reqFiltro.request.params.get('categoria'))
+      .toBe('TECNOLOGIA');
+
+    expect(reqFiltro.request.params.get('dataInicial'))
+      .toBe('2026-09-01T00:00:00');
+
+    expect(reqFiltro.request.params.get('dataFinal'))
+      .toBe('2026-09-30T23:59:59');
+
+    reqFiltro.flush([]);
+  });
+
+  it('should set erro when ranking request fails', () => {
+    fixture.detectChanges();
+
+    responderCategorias();
+
+    const reqRanking = httpMock.expectOne(
+      request => request.url === rankingUrl
+    );
+
+    reqRanking.error(
+      new ProgressEvent('erro de rede')
+    );
 
     expect(component.erro()).toBeTruthy();
     expect(component.carregando()).toBe(false);
