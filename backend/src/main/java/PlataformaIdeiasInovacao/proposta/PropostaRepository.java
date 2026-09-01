@@ -3,13 +3,14 @@ package PlataformaIdeiasInovacao.proposta;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import PlataformaIdeiasInovacao.proposta.indicador.StatusCountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import PlataformaIdeiasInovacao.proposta.indicador.StatusCountProjection;
 
 public interface PropostaRepository extends JpaRepository<Proposta, Long> {
 
@@ -22,9 +23,9 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     @Query("""
     SELECT COUNT(p)
     FROM Proposta p
-    WHERE (:categoria IS NULL OR p.categoria = :categoria)
-    AND (:dataInicial IS NULL OR p.dataCriacao >= :dataInicial)
-    AND (:dataFinal IS NULL OR p.dataCriacao <= :dataFinal)
+    WHERE p.categoria = COALESCE(:categoria, p.categoria)
+    AND p.dataCriacao >= COALESCE(:dataInicial, p.dataCriacao)
+    AND p.dataCriacao <= COALESCE(:dataFinal, p.dataCriacao)
     """)
     long contarTotalComFiltros(
             @Param("categoria") String categoria,
@@ -35,9 +36,9 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     @Query("""
         SELECT p.status AS status, COUNT(p) AS total
         FROM Proposta p
-        WHERE (:categoria IS NULL OR p.categoria = :categoria)
-        AND (:dataInicial IS NULL OR p.dataCriacao >= :dataInicial)
-        AND (:dataFinal IS NULL OR p.dataCriacao <= :dataFinal)
+        WHERE p.categoria = COALESCE(:categoria, p.categoria)
+        AND p.dataCriacao >= COALESCE(:dataInicial, p.dataCriacao)
+        AND p.dataCriacao <= COALESCE(:dataFinal, p.dataCriacao)
         GROUP BY p.status
     """)
     List<StatusCountProjection> contarPorStatusComFiltros(
@@ -49,9 +50,9 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     @Query("""
         SELECT p FROM Proposta p
         WHERE p.autor.id = :autorId
-        AND (:status IS NULL OR p.status = :status)
-        AND (:dataInicial IS NULL OR p.dataCriacao >= :dataInicial)
-        AND (:dataFinal IS NULL OR p.dataCriacao <= :dataFinal)
+        AND p.status = COALESCE(:status, p.status)
+        AND p.dataCriacao >= COALESCE(:dataInicial, p.dataCriacao)
+        AND p.dataCriacao <= COALESCE(:dataFinal, p.dataCriacao)
         ORDER BY p.dataCriacao DESC
     """)
     Page<Proposta> buscarMinhasPropostas(
@@ -66,9 +67,9 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
         SELECT p FROM Proposta p
         LEFT JOIN Voto v ON v.proposta = p
         WHERE p.status IN (:status1, :status2)
-        AND (:categoria IS NULL OR p.categoria = :categoria)
-        AND (:dataInicial IS NULL OR p.dataCriacao >= :dataInicial)
-        AND (:dataFinal IS NULL OR p.dataCriacao <= :dataFinal)
+        AND p.categoria = COALESCE(:categoria, p.categoria)
+        AND p.dataCriacao >= COALESCE(:dataInicial, p.dataCriacao)
+        AND p.dataCriacao <= COALESCE(:dataFinal, p.dataCriacao)
         GROUP BY p.id
         ORDER BY COUNT(v.id) DESC, p.dataCriacao ASC
     """)

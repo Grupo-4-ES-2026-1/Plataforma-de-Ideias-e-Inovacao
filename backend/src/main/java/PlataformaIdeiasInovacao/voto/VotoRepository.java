@@ -2,12 +2,12 @@ package PlataformaIdeiasInovacao.voto;
 
 import java.time.LocalDateTime;
 
-import PlataformaIdeiasInovacao.user.User;
-import PlataformaIdeiasInovacao.proposta.Proposta;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import PlataformaIdeiasInovacao.proposta.Proposta;
+import PlataformaIdeiasInovacao.user.User;
 
 public interface VotoRepository extends JpaRepository<Voto, Long> {
 
@@ -19,9 +19,9 @@ public interface VotoRepository extends JpaRepository<Voto, Long> {
         SELECT COUNT(v)
         FROM Voto v
         JOIN v.proposta p
-        WHERE (:categoria IS NULL OR p.categoria = :categoria)
-        AND (:dataInicial IS NULL OR p.dataCriacao >= :dataInicial)
-        AND (:dataFinal IS NULL OR p.dataCriacao <= :dataFinal)
+        WHERE p.categoria = COALESCE(:categoria, p.categoria)
+        AND p.dataCriacao >= COALESCE(:dataInicial, p.dataCriacao)
+        AND p.dataCriacao <= COALESCE(:dataFinal, p.dataCriacao)
     """)
     long contarVotosComFiltros(
             @Param("categoria") String categoria,
