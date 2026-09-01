@@ -173,4 +173,4 @@ Os perfis `test` (H2) e `prod` (PostgreSQL) têm suas próprias configurações 
 
 ## 🚧 Status do Projeto
 
-Em desenvolvimento — Quinta Iteração
+Finalizado
