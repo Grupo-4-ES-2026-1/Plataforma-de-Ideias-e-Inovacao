@@ -79,6 +79,76 @@ describe('RankingComponent', () => {
     expect(component.carregando()).toBe(false);
   });
 
+  it('should filter propostas by dataInicial', () => {
+    fixture.detectChanges();
+
+    const req = httpMock.expectOne(req => req.url === apiUrl);
+
+    req.flush([
+      {
+        id: 1,
+        titulo: 'Proposta Antiga',
+        descricao: 'Descrição',
+        categoria: 'TECNOLOGIA',
+        status: 'SUBMETIDA',
+        numeroDeVotos: 5,
+        dataCriacao: '2026-08-01T10:00:00',
+      },
+      {
+        id: 2,
+        titulo: 'Proposta Nova',
+        descricao: 'Descrição',
+        categoria: 'TECNOLOGIA',
+        status: 'SUBMETIDA',
+        numeroDeVotos: 8,
+        dataCriacao: '2026-09-01T10:00:00',
+      },
+    ]);
+
+    component.dataInicial = '2026-09-01';
+    component.aplicarFiltros();
+
+    const ranking = component.propostas();
+
+    expect(ranking.length).toBe(1);
+    expect(ranking[0].id).toBe(2);
+  });
+
+  it('should filter propostas by dataFinal', () => {
+    fixture.detectChanges();
+
+    const req = httpMock.expectOne(req => req.url === apiUrl);
+
+    req.flush([
+      {
+        id: 1,
+        titulo: 'Proposta Antiga',
+        descricao: 'Descrição',
+        categoria: 'TECNOLOGIA',
+        status: 'SUBMETIDA',
+        numeroDeVotos: 5,
+        dataCriacao: '2026-08-01T10:00:00',
+      },
+      {
+        id: 2,
+        titulo: 'Proposta Nova',
+        descricao: 'Descrição',
+        categoria: 'TECNOLOGIA',
+        status: 'SUBMETIDA',
+        numeroDeVotos: 8,
+        dataCriacao: '2026-09-01T10:00:00',
+      },
+    ]);
+
+    component.dataFinal = '2026-08-31';
+    component.aplicarFiltros();
+
+    const ranking = component.propostas();
+
+    expect(ranking.length).toBe(1);
+    expect(ranking[0].id).toBe(1);
+  });
+
   it('should set erro when backend request fails', () => {
     fixture.detectChanges();
 

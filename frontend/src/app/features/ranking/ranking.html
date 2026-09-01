@@ -14,13 +14,14 @@
 
   @if (!carregando() && !erro()) {
     <div class="filtros-ranking">
+
       <div class="filtro-grupo">
         <label for="categoria">Categoria:</label>
 
         <select
           id="categoria"
           [(ngModel)]="filtroCategoria"
-          (change)="aplicarFiltroCategoria()"
+          (change)="aplicarFiltros()"
         >
           <option value="">Todas as Categorias</option>
 
@@ -31,6 +32,29 @@
           }
         </select>
       </div>
+
+      <div class="filtro-grupo">
+        <label for="dataInicial">Data inicial:</label>
+
+        <input
+          id="dataInicial"
+          type="date"
+          [(ngModel)]="dataInicial"
+          (change)="aplicarFiltros()"
+        >
+      </div>
+
+      <div class="filtro-grupo">
+        <label for="dataFinal">Data final:</label>
+
+        <input
+          id="dataFinal"
+          type="date"
+          [(ngModel)]="dataFinal"
+          (change)="aplicarFiltros()"
+        >
+      </div>
+
     </div>
 
     <div class="ranking-lista">

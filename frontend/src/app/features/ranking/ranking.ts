@@ -20,7 +20,10 @@ export class RankingComponent implements OnInit {
   erro = signal('');
 
   todasPropostas: PropostaResponse[] = [];
+
   filtroCategoria = '';
+  dataInicial = '';
+  dataFinal = '';
 
   ngOnInit(): void {
     this.carregarRanking();
@@ -43,7 +46,7 @@ export class RankingComponent implements OnInit {
         ];
 
         this.categoriasDisponiveis.set(categorias);
-        this.aplicarFiltroCategoria();
+        this.aplicarFiltros();
         this.carregando.set(false);
       },
       error: () => {
@@ -53,13 +56,37 @@ export class RankingComponent implements OnInit {
     });
   }
 
-  aplicarFiltroCategoria(): void {
+  aplicarFiltros(): void {
     let filtradas = [...this.todasPropostas];
 
     if (this.filtroCategoria) {
       filtradas = filtradas.filter(
         (proposta) => proposta.categoria === this.filtroCategoria
       );
+    }
+
+    if (this.dataInicial) {
+      const inicio = new Date(`${this.dataInicial}T00:00:00`);
+
+      filtradas = filtradas.filter((proposta) => {
+        if (!proposta.dataCriacao) {
+          return false;
+        }
+
+        return new Date(proposta.dataCriacao) >= inicio;
+      });
+    }
+
+    if (this.dataFinal) {
+      const fim = new Date(`${this.dataFinal}T23:59:59`);
+
+      filtradas = filtradas.filter((proposta) => {
+        if (!proposta.dataCriacao) {
+          return false;
+        }
+
+        return new Date(proposta.dataCriacao) <= fim;
+      });
     }
 
     filtradas.sort(

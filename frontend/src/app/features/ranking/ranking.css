@@ -54,7 +54,8 @@
   color: #4b5563;
 }
 
-.filtro-grupo select {
+.filtro-grupo select,
+.filtro-grupo input {
   padding: 0.5rem;
   border: 1px solid #d1d5db;
   border-radius: 6px;
@@ -156,7 +157,8 @@
     gap: 1rem;
   }
 
-  .filtro-grupo select {
+  .filtro-grupo select,
+  .filtro-grupo input {
     width: 100%;
   }
 }
