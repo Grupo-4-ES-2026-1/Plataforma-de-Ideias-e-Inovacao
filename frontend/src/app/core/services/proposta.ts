@@ -139,7 +139,7 @@ export class PropostaService {
   ): Observable<PropostaResponse> {
     return this.http.patch<PropostaResponse>(
       `${this.apiUrl}/${id}/status`,
-      { novoStatus }
+      { status: novoStatus }
     );
   }
 
@@ -148,6 +148,13 @@ export class PropostaService {
   ): Observable<HistoricoStatusItem[]> {
     return this.http.get<HistoricoStatusItem[]>(
       `${this.apiUrl}/${id}/historico-status`
+    );
+  }
+
+  votar(id: number): Observable<{ id: number; propostaId: number; usuarioId: number }> {
+    return this.http.post<{ id: number; propostaId: number; usuarioId: number }>(
+      `${this.apiUrl}/${id}/voto`,
+      {}
     );
   }
 }
