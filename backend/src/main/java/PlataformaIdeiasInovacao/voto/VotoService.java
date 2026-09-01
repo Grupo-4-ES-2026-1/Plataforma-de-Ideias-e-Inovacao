@@ -3,6 +3,7 @@ package PlataformaIdeiasInovacao.voto;
 import org.springframework.stereotype.Service;
 
 import PlataformaIdeiasInovacao.proposta.Proposta;
+import PlataformaIdeiasInovacao.proposta.PropostaNaoEncontradaException;
 import PlataformaIdeiasInovacao.proposta.PropostaRepository;
 import PlataformaIdeiasInovacao.proposta.StatusProposta;
 import PlataformaIdeiasInovacao.user.User;
@@ -22,7 +23,7 @@ public class VotoService {
     public VotoResponseDTO votar(Long propostaId, User usuario) {
 
         Proposta proposta = propostaRepository.findById(propostaId)
-                .orElseThrow(() -> new RuntimeException("Proposta não encontrada."));
+                .orElseThrow(() -> new PropostaNaoEncontradaException("Proposta não encontrada."));
 
         if (proposta.getStatus() != StatusProposta.SUBMETIDA
                 && proposta.getStatus() != StatusProposta.EM_ANALISE) {
@@ -31,7 +32,7 @@ public class VotoService {
         }
 
         if (votoRepository.existsByUsuarioAndProposta(usuario, proposta)) {
-            throw new RuntimeException("Usuário já votou nesta proposta.");
+            throw new IllegalArgumentException("Usuário já votou nesta proposta.");
         }
 
         Voto voto = new Voto();
@@ -50,7 +51,7 @@ public class VotoService {
     }
     public long contarVotos(Long propostaId) {
         Proposta proposta = propostaRepository.findById(propostaId)
-                .orElseThrow(() -> new RuntimeException("Proposta não encontrada."));
+                .orElseThrow(() -> new PropostaNaoEncontradaException("Proposta não encontrada."));
 
         return votoRepository.countByProposta(proposta);
     }

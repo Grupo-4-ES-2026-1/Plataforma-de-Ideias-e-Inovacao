@@ -40,6 +40,16 @@ export class PropostaDetalheComponent implements OnInit {
   alterandoStatus = signal(false);
   erroStatus = signal('');
 
+  votando = signal(false);
+  erroVoto = signal('');
+  votoRegistrado = signal(false);
+
+  /** Só é possível votar em propostas ainda em avaliação (mesma regra do backend). */
+  podeVotar = computed(() => {
+    const p = this.proposta();
+    return !!p && (p.status === 'SUBMETIDA' || p.status === 'EM_ANALISE') && !this.votoRegistrado();
+  });
+
   /** #107 - só quem avalia propostas (ADMIN) pode alterar o status. */
   podeAlterarStatus = computed(() => this.authService.roleAtual() === 'ADMIN');
 
@@ -118,6 +128,36 @@ export class PropostaDetalheComponent implements OnInit {
 
   getLabelStatus(status: string): string {
     return getLabelStatus(status);
+  }
+
+  votar(): void {
+    if (!this.propostaId || this.votando() || !this.podeVotar()) return;
+
+    this.votando.set(true);
+    this.erroVoto.set('');
+
+    this.propostaService.votar(this.propostaId).subscribe({
+      next: () => {
+        this.votando.set(false);
+        this.votoRegistrado.set(true);
+
+        const atual = this.proposta();
+        if (atual) {
+          this.proposta.set({
+            ...atual,
+            numeroDeVotos: atual.numeroDeVotos + 1
+          });
+        }
+      },
+      error: (erro) => {
+        this.votando.set(false);
+        this.erroVoto.set(
+          erro?.error && typeof erro.error === 'string'
+            ? erro.error
+            : 'Não foi possível registrar seu voto agora. Tente novamente.'
+        );
+      }
+    });
   }
 
   //função para salvar o novo comentário

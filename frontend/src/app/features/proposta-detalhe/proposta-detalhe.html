@@ -17,6 +17,22 @@
       <p class="proposta-status"><strong>Status:</strong> {{ getLabelStatus(p.status) }}</p>
       <p class="proposta-votos"><strong>Votos:</strong> {{ p.numeroDeVotos }}</p>
 
+      @if (podeVotar()) {
+        <button
+          class="botao-votar"
+          type="button"
+          [disabled]="votando()"
+          (click)="votar()">
+          {{ votando() ? 'Registrando voto...' : 'Votar nesta proposta' }}
+        </button>
+      } @else if (votoRegistrado()) {
+        <p class="voto-confirmado">Você já votou nesta proposta. Obrigado!</p>
+      }
+
+      @if (erroVoto()) {
+        <p class="erro-voto">{{ erroVoto() }}</p>
+      }
+
       <hr>
       <p><strong>Descrição Completa:</strong></p>
       <p class="proposta-descricao">{{ p.descricao }}</p>

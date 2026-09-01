@@ -22,6 +22,39 @@
   color: #dc2626;
 }
 
+.botao-votar {
+  margin-top: 0.75rem;
+  padding: 0.55rem 1.1rem;
+  background-color: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.botao-votar:hover:not(:disabled) {
+  background-color: #4f46e5;
+}
+
+.botao-votar:disabled {
+  background-color: #c7c7f5;
+  cursor: not-allowed;
+}
+
+.voto-confirmado {
+  margin-top: 0.75rem;
+  color: #16a34a;
+  font-size: 0.85rem;
+}
+
+.erro-voto {
+  margin-top: 0.5rem;
+  color: #dc2626;
+  font-size: 0.85rem;
+}
+
 .proposta-card {
   border: 1px solid #e5e7eb;
   border-radius: 10px;
