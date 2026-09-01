@@ -13,6 +13,26 @@
   }
 
   @if (!carregando() && !erro()) {
+    <div class="filtros-ranking">
+      <div class="filtro-grupo">
+        <label for="categoria">Categoria:</label>
+
+        <select
+          id="categoria"
+          [(ngModel)]="filtroCategoria"
+          (change)="aplicarFiltroCategoria()"
+        >
+          <option value="">Todas as Categorias</option>
+
+          @for (categoria of categoriasDisponiveis(); track categoria) {
+            <option [value]="categoria">
+              {{ categoria }}
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+
     <div class="ranking-lista">
       @for (proposta of propostas(); track proposta.id; let posicao = $index) {
         <div class="ranking-card">
@@ -22,10 +42,7 @@
 
           <div class="ranking-conteudo">
             <h3>{{ proposta.titulo }}</h3>
-
-            <p class="ranking-categoria">
-              {{ proposta.categoria }}
-            </p>
+            <p class="ranking-categoria">{{ proposta.categoria }}</p>
           </div>
 
           <div class="ranking-votos">
