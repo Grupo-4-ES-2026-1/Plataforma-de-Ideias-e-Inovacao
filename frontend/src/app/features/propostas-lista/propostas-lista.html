@@ -20,8 +20,8 @@
     <div class="filtro-grupo">
       <label>Ordenar por:</label>
       <select [(ngModel)]="ordenacao" (change)="aplicarFiltros()">
-        <option value="recentes">Mais Recentes (Padrão)</option>
-        <option value="antigas">Mais Antigas</option>
+        <option value="dataCriacao,desc">Mais Recentes (Padrão)</option>
+        <option value="dataCriacao,asc">Mais Antigas</option>
       </select>
     </div>
   </div>
