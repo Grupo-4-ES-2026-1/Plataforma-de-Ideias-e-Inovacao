@@ -8,6 +8,7 @@ import { PropostaDetalheComponent } from './features/proposta-detalhe/proposta-d
 import { PropostaCadastroComponent } from './features/cadastro-proposta/cadastro-proposta';
 import { MinhasPropostasComponent } from './features/minhas-propostas/minhas-propostas';
 import { DashboardComponent } from './features/dashboard/dashboard';
+import { RankingComponent } from './features/ranking/ranking';
 
 export const routes: Routes = [
   {
@@ -34,9 +35,9 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
-  path: 'minhas-propostas',
-  component: MinhasPropostasComponent,
-  canActivate: [authGuard]
+    path: 'minhas-propostas',
+    component: MinhasPropostasComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'propostas/nova',
@@ -51,6 +52,11 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'ranking',
+    component: RankingComponent,
     canActivate: [authGuard]
   }
 ];

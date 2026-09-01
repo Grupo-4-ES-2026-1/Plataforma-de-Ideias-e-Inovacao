@@ -1,0 +1,164 @@
+.ranking-container {
+  max-width: 720px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.ranking-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.ranking-header h2 {
+  color: #1f2937;
+  margin: 0 0 0.5rem;
+}
+
+.ranking-header p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.status-mensagem {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+.status-mensagem.erro {
+  color: #dc2626;
+}
+
+.filtros-ranking {
+  display: flex;
+  gap: 1.5rem;
+  background-color: #f8f9fa;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filtro-grupo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.filtro-grupo select,
+.filtro-grupo input {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 0.9rem;
+  color: #1f2937;
+  min-width: 180px;
+}
+
+.ranking-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ranking-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.ranking-posicao {
+  min-width: 45px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #6366f1;
+  text-align: center;
+}
+
+.ranking-conteudo {
+  flex: 1;
+}
+
+.ranking-conteudo h3 {
+  margin: 0 0 0.5rem;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.ranking-categoria {
+  font-size: 0.8rem;
+  color: #6366f1;
+  font-weight: 500;
+  margin: 0;
+}
+
+.ranking-votos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+  color: #4b5563;
+}
+
+.ranking-votos strong {
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.ranking-votos span {
+  font-size: 0.75rem;
+}
+
+.ranking-card button {
+  padding: 0.5rem 1rem;
+  background-color: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.ranking-card button:hover {
+  background-color: #4f46e5;
+}
+
+@media (max-width: 640px) {
+  .ranking-card {
+    flex-wrap: wrap;
+  }
+
+  .ranking-conteudo {
+    min-width: calc(100% - 70px);
+  }
+
+  .ranking-votos {
+    margin-left: 60px;
+  }
+
+  .filtros-ranking {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .filtro-grupo select,
+  .filtro-grupo input {
+    width: 100%;
+  }
+}

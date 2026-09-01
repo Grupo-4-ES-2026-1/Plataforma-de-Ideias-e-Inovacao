@@ -27,7 +27,7 @@ export interface PropostaPage {
   last: boolean;
 }
 
-/**  - item do histórico de status de uma proposta. */
+/** Item do histórico de status de uma proposta. */
 export interface HistoricoStatusItem {
   status: string;
   dataAlteracao: string;
@@ -38,13 +38,18 @@ export interface HistoricoStatusItem {
 })
 export class PropostaService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'https://plataforma-de-ideias-e-inovacao.onrender.com/propostas';
+
+  private readonly apiUrl =
+    'https://plataforma-de-ideias-e-inovacao.onrender.com/propostas';
 
   cadastrar(dados: PropostaRequest): Observable<PropostaResponse> {
     return this.http.post<PropostaResponse>(this.apiUrl, dados);
   }
 
-  listar(status: string = '', sort: string = 'recentes'): Observable<PropostaResponse[]> {
+  listar(
+    status: string = '',
+    sort: string = 'recentes'
+  ): Observable<PropostaResponse[]> {
     let params = new HttpParams();
 
     if (status) {
@@ -69,7 +74,6 @@ export class PropostaService {
     page: number = 0,
     size: number = 5
   ): Observable<PropostaPage> {
-
     let params = new HttpParams()
       .set('page', page)
       .set('size', size);
@@ -79,11 +83,17 @@ export class PropostaService {
     }
 
     if (dataInicial) {
-      params = params.set('dataInicial', `${dataInicial}T00:00:00`);
+      params = params.set(
+        'dataInicial',
+        `${dataInicial}T00:00:00`
+      );
     }
 
     if (dataFinal) {
-      params = params.set('dataFinal', `${dataFinal}T23:59:59`);
+      params = params.set(
+        'dataFinal',
+        `${dataFinal}T23:59:59`
+      );
     }
 
     return this.http.get<PropostaPage>(
@@ -92,19 +102,52 @@ export class PropostaService {
     );
   }
 
-  /**
-   * Endpoint ainda não implementado no backend. Assim que
-   * estiver disponível, esta chamada passa a funcionar sem mudanças aqui.
-   */
-  atualizarStatus(id: number, novoStatus: string): Observable<PropostaResponse> {
-    return this.http.patch<PropostaResponse>(`${this.apiUrl}/${id}/status`, { novoStatus });
+  obterRanking(
+    categoria?: string,
+    dataInicial?: string,
+    dataFinal?: string
+  ): Observable<PropostaResponse[]> {
+    let params = new HttpParams();
+
+    if (categoria) {
+      params = params.set('categoria', categoria);
+    }
+
+    if (dataInicial) {
+      params = params.set(
+        'dataInicial',
+        `${dataInicial}T00:00:00`
+      );
+    }
+
+    if (dataFinal) {
+      params = params.set(
+        'dataFinal',
+        `${dataFinal}T23:59:59`
+      );
+    }
+
+    return this.http.get<PropostaResponse[]>(
+      `${this.apiUrl}/ranking`,
+      { params }
+    );
   }
 
-  /**
-   * Endpoint ainda não implementado no backend). Assim que
-   * estiver disponível, esta chamada passa a funcionar sem mudanças aqui.
-   */
-  buscarHistoricoStatus(id: number): Observable<HistoricoStatusItem[]> {
-    return this.http.get<HistoricoStatusItem[]>(`${this.apiUrl}/${id}/historico-status`);
+  atualizarStatus(
+    id: number,
+    novoStatus: string
+  ): Observable<PropostaResponse> {
+    return this.http.patch<PropostaResponse>(
+      `${this.apiUrl}/${id}/status`,
+      { novoStatus }
+    );
+  }
+
+  buscarHistoricoStatus(
+    id: number
+  ): Observable<HistoricoStatusItem[]> {
+    return this.http.get<HistoricoStatusItem[]>(
+      `${this.apiUrl}/${id}/historico-status`
+    );
   }
 }
