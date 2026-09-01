@@ -48,7 +48,7 @@ export class PropostaService {
 
   listar(
     status: string = '',
-    sort: string = 'recentes'
+    sort: string = 'dataCriacao,desc'
   ): Observable<PropostaResponse[]> {
     let params = new HttpParams();
 

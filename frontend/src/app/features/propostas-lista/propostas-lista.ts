@@ -19,7 +19,7 @@ export class PropostasListaComponent implements OnInit {
   erro = signal('');
 
   filtroStatus = '';
-  ordenacao = 'recentes';
+  ordenacao = 'dataCriacao,desc';
 
   ngOnInit(): void {
     this.carregarPropostas();
