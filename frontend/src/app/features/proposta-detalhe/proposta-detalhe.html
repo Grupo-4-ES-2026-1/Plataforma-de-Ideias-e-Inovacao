@@ -40,51 +40,51 @@
 
     <!-- US10 #101 - ação de alterar status (somente para quem avalia propostas) -->
     @if (podeAlterarStatus()) {
-      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 15px;">
-        <p style="margin: 0 0 10px 0;"><strong>Alterar status da proposta</strong></p>
+      <div class="secao-card">
+        <p class="secao-titulo">Alterar status da proposta</p>
 
         @if (proximosStatus().length > 0) {
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <div class="lista-botoes-status">
             @for (statusOpcao of proximosStatus(); track statusOpcao) {
               <button
                 type="button"
+                class="botao-status"
                 [disabled]="alterandoStatus()"
                 (click)="alterarStatus(statusOpcao)"
-                style="padding: 8px 16px; cursor: pointer;"
               >
                 Marcar como "{{ getLabelStatus(statusOpcao) }}"
               </button>
             }
           </div>
         } @else {
-          <p style="color: #666; font-style: italic; margin: 0;">
+          <p class="secao-vazia">
             Esta proposta está em um status final e não possui mais transições disponíveis.
           </p>
         }
 
         @if (erroStatus()) {
-          <p class="status-mensagem erro" style="margin-top: 10px;">{{ erroStatus() }}</p>
+          <p class="status-mensagem erro">{{ erroStatus() }}</p>
         }
       </div>
     }
 
     <!-- US11 #104 - histórico de status -->
-    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 15px;">
-      <p style="margin: 0 0 10px 0;"><strong>Histórico de status</strong></p>
+    <div class="secao-card">
+      <p class="secao-titulo">Histórico de status</p>
 
       @if (carregandoHistorico()) {
         <p class="status-mensagem">Carregando histórico...</p>
       } @else if (historico().length > 0) {
-        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
-          @for (item of historico(); track item.dataAlteracao + item.status) {
-            <li style="background: white; padding: 10px; border-radius: 6px; border-left: 4px solid #007bff;">
-              <strong>{{ getLabelStatus(item.status) }}</strong>
-              <span style="color: #555;"> — {{ item.dataAlteracao | date:'dd/MM/yyyy HH:mm' }}</span>
+        <ul class="lista-historico">
+          @for (item of historico(); track item.data + item.statusNovo) {
+            <li class="item-historico">
+              <strong>{{ getLabelStatus(item.statusAnterior) }} → {{ getLabelStatus(item.statusNovo) }}</strong>
+              <span class="item-historico-data"> — {{ item.data | date:'dd/MM/yyyy HH:mm' }}</span>
             </li>
           }
         </ul>
       } @else {
-        <p style="color: #666; font-style: italic; margin: 0;">
+        <p class="secao-vazia">
           Ainda não há histórico de status para esta proposta.
         </p>
       }
@@ -94,41 +94,4 @@
   <button class="btn-voltar" routerLink="/propostas">
     Voltar para a Lista
   </button>
-  <hr style="margin: 30px 0;">
-
-  <!-- ÁREA DE COMENTÁRIOS -->
-  <div style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
-    <h3>Discussão</h3>
-
-    <!-- Formulário para adicionar comentário -->
-    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
-      <input 
-        #campoComentario 
-        type="text" 
-        placeholder="Escreva seu comentário para refinar esta ideia..." 
-        style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"
-      >
-      <!-- Ao clicar, chama a função e limpa o campo -->
-      <button 
-        (click)="adicionarComentario(campoComentario.value); campoComentario.value = ''"
-        style="padding: 10px 20px; cursor: pointer;"
-      >
-        Enviar
-      </button>
-    </div>
-
-    <!-- Lista de comentários renderizada em ordem -->
-    <div style="display: flex; flex-direction: column; gap: 15px;">
-      @for (comentario of comentarios(); track comentario.id) {
-        <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #007bff; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-          <div style="font-size: 0.9em; color: #555; margin-bottom: 5px;">
-            <strong>{{ comentario.autor }}</strong> comentou em {{ comentario.data | date:'dd/MM/yyyy HH:mm' }}:
-          </div>
-          <p style="margin: 0;">{{ comentario.texto }}</p>
-        </div>
-      } @empty {
-        <p style="color: #666; font-style: italic;">Nenhum comentário ainda. Seja o primeiro a contribuir!</p>
-      }
-    </div>
-  </div>
 </section>

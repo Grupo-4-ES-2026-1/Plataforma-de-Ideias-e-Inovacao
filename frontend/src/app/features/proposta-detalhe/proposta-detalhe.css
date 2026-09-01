@@ -111,3 +111,73 @@
 .btn-voltar:hover {
   background-color: #4f46e5;
 }
+
+.secao-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.secao-titulo {
+  margin: 0 0 0.75rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.secao-vazia {
+  color: #6b7280;
+  font-style: italic;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.lista-botoes-status {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.botao-status {
+  padding: 0.5rem 1rem;
+  background-color: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.botao-status:hover:not(:disabled) {
+  background-color: #4f46e5;
+}
+
+.botao-status:disabled {
+  background-color: #c7c7f5;
+  cursor: not-allowed;
+}
+
+.lista-historico {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item-historico {
+  background-color: #f9fafb;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border-left: 4px solid #6366f1;
+  font-size: 0.85rem;
+  color: #1f2937;
+}
+
+.item-historico-data {
+  color: #6b7280;
+}

@@ -29,25 +29,27 @@
         <span>Propostas</span>
       </a>
 
-      <a routerLink="/ranking" routerLinkActive="active" class="sidebar-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 19h16" />
-          <path d="M6 19V11h4v8" />
-          <path d="M10 19V7h4v12" />
-          <path d="M14 19V4h4v15" />
-        </svg>
-        <span>Ranking</span>
-      </a>
+      @if (isAdmin) {
+        <a routerLink="/ranking" routerLinkActive="active" class="sidebar-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19h16" />
+            <path d="M6 19V11h4v8" />
+            <path d="M10 19V7h4v12" />
+            <path d="M14 19V4h4v15" />
+          </svg>
+          <span>Ranking</span>
+        </a>
 
-      <a routerLink="/dashboard" routerLinkActive="active" class="sidebar-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="7" height="9" rx="1" />
-          <rect x="14" y="3" width="7" height="5" rx="1" />
-          <rect x="14" y="12" width="7" height="9" rx="1" />
-          <rect x="3" y="16" width="7" height="5" rx="1" />
-        </svg>
-        <span>Dashboard</span>
-      </a>
+        <a routerLink="/dashboard" routerLinkActive="active" class="sidebar-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="9" rx="1" />
+            <rect x="14" y="3" width="7" height="5" rx="1" />
+            <rect x="14" y="12" width="7" height="9" rx="1" />
+            <rect x="3" y="16" width="7" height="5" rx="1" />
+          </svg>
+          <span>Dashboard</span>
+        </a>
+      }
 
       <a routerLink="/minhas-propostas" routerLinkActive="active" class="sidebar-link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

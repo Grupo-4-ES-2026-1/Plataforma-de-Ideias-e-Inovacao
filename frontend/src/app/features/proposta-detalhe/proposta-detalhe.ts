@@ -44,10 +44,13 @@ export class PropostaDetalheComponent implements OnInit {
   erroVoto = signal('');
   votoRegistrado = signal(false);
 
-  /** Só é possível votar em propostas ainda em avaliação (mesma regra do backend). */
+  /** Só é possível votar em propostas ainda em avaliação (mesma regra do backend). Quem avalia (ADMIN) não vota. */
   podeVotar = computed(() => {
     const p = this.proposta();
-    return !!p && (p.status === 'SUBMETIDA' || p.status === 'EM_ANALISE') && !this.votoRegistrado();
+    return !!p
+      && (p.status === 'SUBMETIDA' || p.status === 'EM_ANALISE')
+      && !this.votoRegistrado()
+      && this.authService.roleAtual() !== 'ADMIN';
   });
 
   /** #107 - só quem avalia propostas (ADMIN) pode alterar o status. */

@@ -3,6 +3,7 @@ import { Register } from './features/register/register';
 import { Login } from './features/login/login';
 import { Home } from './features/home/home';
 import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
 import { PropostasListaComponent } from './features/propostas-lista/propostas-lista';
 import { PropostaDetalheComponent } from './features/proposta-detalhe/proposta-detalhe';
 import { PropostaCadastroComponent } from './features/cadastro-proposta/cadastro-proposta';
@@ -50,13 +51,15 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    // US14 - só quem avalia/gerencia propostas (ADMIN) acessa o dashboard.
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [authGuard]
+    canActivate: [adminGuard]
   },
   {
+    // US13 - só quem avalia propostas (ADMIN) acessa o ranking.
     path: 'ranking',
     component: RankingComponent,
-    canActivate: [authGuard]
+    canActivate: [adminGuard]
   }
 ];
