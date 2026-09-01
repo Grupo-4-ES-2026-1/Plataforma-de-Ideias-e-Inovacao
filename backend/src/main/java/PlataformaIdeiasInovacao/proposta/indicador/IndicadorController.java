@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import PlataformaIdeiasInovacao.proposta.indicador.dto.EngajamentoDTO;
 import PlataformaIdeiasInovacao.proposta.indicador.dto.IndicadoresPropostasDTO;
 
 @RestController
@@ -32,6 +33,29 @@ public class IndicadorController {
 
         return ResponseEntity.ok(
                 indicadorService.buscarIndicadores(
+                        categoria,
+                        dataInicial,
+                        dataFinal
+                )
+        );
+    }
+
+    @GetMapping("/engajamento")
+    public ResponseEntity<EngajamentoDTO> buscarEngajamento(
+
+            @RequestParam(required = false)
+            String categoria,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime dataInicial,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime dataFinal) {
+
+        return ResponseEntity.ok(
+                indicadorService.buscarEngajamento(
                         categoria,
                         dataInicial,
                         dataFinal
