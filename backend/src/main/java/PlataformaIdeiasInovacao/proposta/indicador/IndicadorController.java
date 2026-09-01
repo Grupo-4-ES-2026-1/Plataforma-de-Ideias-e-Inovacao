@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import PlataformaIdeiasInovacao.proposta.indicador.dto.EngajamentoDTO;
 import PlataformaIdeiasInovacao.proposta.indicador.dto.IndicadoresPropostasDTO;
+import PlataformaIdeiasInovacao.proposta.indicador.dto.TaxaAprovacaoDTO;
 
 @RestController
 @RequestMapping("/propostas/indicadores")
@@ -56,6 +57,29 @@ public class IndicadorController {
 
         return ResponseEntity.ok(
                 indicadorService.buscarEngajamento(
+                        categoria,
+                        dataInicial,
+                        dataFinal
+                )
+        );
+    }
+
+    @GetMapping("/taxa-aprovacao")
+    public ResponseEntity<TaxaAprovacaoDTO> buscarTaxaAprovacao(
+
+            @RequestParam(required = false)
+            String categoria,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime dataInicial,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime dataFinal) {
+
+        return ResponseEntity.ok(
+                indicadorService.buscarTaxaAprovacao(
                         categoria,
                         dataInicial,
                         dataFinal

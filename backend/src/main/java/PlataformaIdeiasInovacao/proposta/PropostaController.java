@@ -41,14 +41,14 @@ public class PropostaController {
     }
 
    @GetMapping
-public ResponseEntity<List<PropostaResponseDTO>> listarTodos(
-        @RequestParam(required = false) StatusProposta status,
-        @RequestParam(required = false) String sort) {
+    public ResponseEntity<List<PropostaResponseDTO>> listarTodos(
+            @RequestParam(required = false) StatusProposta status,
+            @RequestParam(required = false) String sort) {
 
-    return ResponseEntity.ok(
-            propostaService.listarTodos(status, sort)
-    );
-}
+        return ResponseEntity.ok(
+                propostaService.listarTodos(status, sort)
+        );
+    }
 
     @GetMapping("/minhas")
     public ResponseEntity<Page<PropostaResponseDTO>> buscarMinhasPropostas(
@@ -109,4 +109,5 @@ public ResponseEntity<List<PropostaResponseDTO>> listarTodos(
         List<PropostaResponseDTO> ranking = propostaService.obterRanking(categoria, dataInicial, dataFinal);
         return ResponseEntity.ok(ranking);
     }
+
 }
