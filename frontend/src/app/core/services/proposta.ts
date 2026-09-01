@@ -29,8 +29,9 @@ export interface PropostaPage {
 
 /** Item do histórico de status de uma proposta. */
 export interface HistoricoStatusItem {
-  status: string;
-  dataAlteracao: string;
+  statusAnterior: string;
+  statusNovo: string;
+  data: string;
 }
 
 @Injectable({

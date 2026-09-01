@@ -22,6 +22,11 @@ public class VotoService {
 
     public VotoResponseDTO votar(Long propostaId, User usuario) {
 
+        if (usuario.getRole() != null && usuario.getRole().equalsIgnoreCase("ADMIN")) {
+            throw new IllegalArgumentException(
+                "Quem avalia as propostas não pode votar, para evitar conflito de interesse.");
+        }
+
         Proposta proposta = propostaRepository.findById(propostaId)
                 .orElseThrow(() -> new PropostaNaoEncontradaException("Proposta não encontrada."));
 

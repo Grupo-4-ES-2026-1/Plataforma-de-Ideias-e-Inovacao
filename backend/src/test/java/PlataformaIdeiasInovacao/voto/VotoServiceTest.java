@@ -135,4 +135,14 @@ class VotoServiceTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("não encontrada");
     }
+
+    @Test
+    void naoDeveRegistrarVotoQuandoUsuarioForAdmin() {
+        User admin = criarUsuario();
+        admin.setRole("ADMIN");
+
+        assertThatThrownBy(() -> votoService.votar(1L, admin))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("conflito de interesse");
+    }
 }

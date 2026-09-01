@@ -55,6 +55,11 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole(ROLE_ADMIN)
                         .requestMatchers(HttpMethod.PATCH, "/propostas/*/status").hasRole(ROLE_ADMIN)
 
+                        // US13 - só quem avalia propostas (ADMIN) acessa o ranking.
+                        .requestMatchers(HttpMethod.GET, "/propostas/ranking").hasRole(ROLE_ADMIN)
+                        // US14 - só quem gerencia propostas (ADMIN) acessa os indicadores.
+                        .requestMatchers(HttpMethod.GET, "/propostas/indicadores/**").hasRole(ROLE_ADMIN)
+
                         .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
 
                         .anyRequest().authenticated()

@@ -21,6 +21,11 @@ export class Nav {
     return this.auth.usuarioLogado();
   }
 
+ 
+  get isAdmin() {
+    return this.auth.roleAtual() === 'ADMIN';
+  }
+
   iniciais = computed(() => {
     const nome = this.auth.usuarioLogado();
     if (!nome) {
